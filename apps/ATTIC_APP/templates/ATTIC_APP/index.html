@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=3, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Attic, useful junk</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'ATTIC_APP/css/style.css' %}"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container">
+        <div class="table">
+            <h1>Welcome, {{thisUser.username}}!</h1>
+            <a href="/logout">Logout</a>    
+            <a href="/belt/addJobForm">New Job!</a> 
+        </div>
+        <table class="table"><!--JOB TABLE-->
+            <h1>Junk in the Attic</h1>
+            <thead>
+            <th>Junk Type</th>
+            <th>Poster</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Currently in Use by</th>
+            <th>Action</th>
+            </thead>
+
+            {% for junk in allJunk %}   
+                {% if job not in thisUser.on_the_job.all %}             
+                <tr class="readableTableData">
+                    <td>{{junk.title}}</td><!--TITLE-->
+                    <td>{{junk.poster.username}}</td><!--POSTER-->
+                    <td>{{junk.location}}</td><!--LOCATION-->
+                    <td>{{junk.description}}</td><!--DESCRIPTION-->                    
+                    <td>{% for category in job.category.all %}{{category.title}}{% endfor %}</td><!--CATEGORY-->                    
+                    <td>{% for worker in job.workers.all %}{{worker.username}}<br>{% endfor %}</td><!--WORKERS-->
+                    <td><!--ACTIONS-->                        
+                        <a href="/belt/{{job.id}}">View</a> <br><!--VIEW-->                        
+                        {% if thisUser not in job.workers.all %}
+                        <a href="/belt/takejob/{{job.id}}" style="color: green">Take Job</a><br> <!--WORKER BUTTON-->
+                        {% endif %}
+                        {% if thisUser in job.workers.all %}
+                        <a href="/belt/quitjob/{{job.id}}" style="color: purple">Quit Job</a><br> <!--QUIT BUTTON-->
+                        {% endif %}
+                        {% if thisUser.id == job.poster.id %}
+                        <a href="/belt/delete/{{job.id}}" style="color: red">Delete</a><br><!--DELETE-->
+                        {% endif %}
+                    </td><!--ACTIONS-->
+                </tr>    
+                {% endif %}            
+            {% endfor %}
+            
+        </table><!--JOB TABLE END-->
+        <table class="table"><!--JOB TABLE-->
+            <h1>Junk you are Currently renting</h1>
+            <thead>
+            <th>Job</th>
+            <th>Poster</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>On The Job</th>
+            <th>Action</th>
+            </thead>
+
+            {% for job in thisUser.on_the_job.all %}                
+                <tr class="readableTableData">
+                    <td>{{job.title}}</td><!--TITLE-->
+                    <td>{{job.poster.username}}</td><!--POSTER-->
+                    <td>{{job.location}}</td><!--LOCATION-->
+                    <td>{{job.description}}</td><!--DESCRIPTION-->
+                    <td>{{job.category.title}}</td><!--CATEGORY-->
+                    <td>{% for worker in job.workers.all %}{{worker.username}}<br>{% endfor %}</td><!--WORKERS-->
+                    <td><!--ACTIONS-->                        
+                        <a href="/belt/{{job.id}}">View</a> <br><!--VIEW-->                        
+                        {% if thisUser not in job.workers.all %}
+                        <a href="/belt/takejob/{{job.id}}" style="color: green">Take Job</a><br> <!--WORKER BUTTON-->
+                        {% endif %}
+                        {% if thisUser in job.workers.all %}
+                        <a href="/belt/quitjob/{{job.id}}" style="color: purple">Quit Job</a><br> <!--QUIT BUTTON-->
+                        {% endif %}
+                        <a href="/belt/delete/{{job.id}}" style="color: red">Job Done!</a><br><!--DELETE-->
+                        
+                    </td><!--ACTIONS-->
+                </tr>                
+            {% endfor %}
+            
+        </table><!--JOB TABLE END-->
+        <a href="/">GO TO LOGIN PAGE</a>     <br>       
+    </div><!-- CONTAINER -->
+</body>
+</html>

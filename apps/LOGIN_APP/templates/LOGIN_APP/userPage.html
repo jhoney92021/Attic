@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{thisUser.username}}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'LOGIN_APP/css/style.css' %}"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+
+    <div class="container">
+        <table class="table"><!--GENERAL INFO-->
+            <thead>
+                <td>
+                    <h5>First Name:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisUser.fname}}</span>
+                    
+                    <h5>Birthday:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisUser.birthday}}</span>                
+                </td>          
+            </thead>
+        </table><!--GENERAL INFO-->
+
+        <table class="table"><!--FAVORITE STUFF-->
+            <h5>Favorite Books:</h5>        
+            {% for books in thisUser.favorite_book.all %}
+                <tr>
+                    <td>
+                        <span style="color: green; font-weight: 600">{{books.title}}</span> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table><!--FAVORITE BOOKS-->
+        <table class="table"><!--FAVORITE AUTHORS-->
+            <h5>Favorite Authors:</h5>  
+            {% for authors in thisUser.favorite_author.all %}
+                <tr>
+                    <td>
+                        <span style="color: green; font-weight: 600">{{authors.fname}}</span> 
+                        <span style="color: green; font-weight: 600">{{authors.lname}}</span> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table><!--FAVORITE STUFF-->
+
+        <a href="/books">GO TO MAIN PAGE</a>     <br>      
+        <a href="/success">GO TO SUCCESS PAGE</a>     
+    </div><!--CONTAINER-->
+</body>
+</html>

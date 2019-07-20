@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Login and Registration</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'LOGIN_APP/css/style.css' %}"> 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="registration">
+                    <form action="/process/registration" method="POST" >
+                        {% csrf_token %}
+                        <table class="table">
+                            <thead>Registration</thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        First Name: <input type="text" name="fname">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Last Name: <input type="text" name="lname">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Username: <input type="text" name="username">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Birthday: <input type="date" name="birthday">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Email: <input type="text" name="email">
+                                    </td>
+                                </tr>
+                                <tr>
+                                <td id="passwordInstruction">Password must be exactly 8 characters, with at least 1 Number, 1 Capital Letter, and 1 of these($,@,!,?)</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Password: <input type="password" name="password" id="intitialPassword"> 
+                                        <input type="checkbox" onclick="initialPassword()">Show Password
+                                        <script>
+                                            function initialPassword() {
+                                                var x = document.getElementById("intitialPassword");
+                                                    if (x.type === "password") {
+                                                        x.type = "text";
+                                                    }
+                                                    else {x.type = "password";}
+                                            }
+                                        </script> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Password Confirmation: <input type="password" name="confirmation" id="confirmation">
+                                        <input type="checkbox" onclick="passwordConfirmation()">Show Password
+                                        <script>
+                                            function passwordConfirmation() {
+                                                var x = document.getElementById("confirmation");
+                                                    if (x.type === "password") {
+                                                        x.type = "text";
+                                                    }
+                                                    else {x.type = "password";}
+                                            }
+                                        </script> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="submit" name="Register" value="Register">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+
+                </div> <!--REGISTRATION--> 
+
+                <div class="login">
+                    <form action="/process/login" method="POST">
+                        {% csrf_token %}
+                        <table class="table">
+                            <thead>Login</thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        Email: <input type="text" name="email">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Password: <input type="password" name="password" id="login">   
+                                        <input type="checkbox" onclick="loginPassword()">Show Password
+                                        <script>
+                                            function loginPassword() {
+                                                var x = document.getElementById("login");
+                                                    if (x.type === "password") {
+                                                        x.type = "text";
+                                                    }
+                                                    else {x.type = "password";}
+                                            }
+                                        </script> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                        <td>
+                                            <input type="submit" name="Login" value="Log In">
+                                        </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </form>    
+                        {% if messages %}
+                        <table class="table">
+                            <tr class="errors">                                
+                                <td>
+                                    {% for message in messages %}
+                                   <li style="list-style: none">{{ message }}</li> 
+                                    {% endfor %}
+                                </td>                                
+                            </tr>
+                        </table>
+                         {% endif %}           
+                    <a href="/attic">GO TO MAIN PAGE</a> <br>      
+                    <a href="/success">GO TO SUCCESS PAGE</a> <br>   
+                    <a href="/logout">Logout</a>     
+                </div> <!--LOGIN--> 
+            </div> <!--ROWS-->  
+        </div> <!--CONTAINER-->   
+    </body>
+</html>

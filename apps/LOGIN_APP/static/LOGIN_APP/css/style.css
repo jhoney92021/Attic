@@ -1,0 +1,33 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+/* LOGIN_APP_STYLE */
+/* LOGIN_APP_STYLE */
+/* LOGIN_APP_STYLE */
+
+input::placeholder{
+    color: red;
+    font-weight: 600;
+}
+
+.errors{
+    height: auto; width: auto;
+    display: inline-block;
+    background-color: red;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.container{
+    background-color: lightgray;
+}
+
+#passwordInstruction{
+    height: auto; width: 200px;
+}
+
+/* LOGIN_APP_STYLE */
+/* LOGIN_APP_STYLE */
+/* LOGIN_APP_STYLE */
