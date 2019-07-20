@@ -14,80 +14,58 @@
     <div class="container">
         <div class="table">
             <h1>Welcome, {{thisUser.username}}!</h1>
-            <a href="/logout">Logout</a>    
-            <a href="/belt/addJobForm">New Job!</a> 
+            <a href="/logout">Logout</a>
         </div>
-        <table class="table"><!--JOB TABLE-->
+        <table class="table"><!--JUNK TABLE-->
             <h1>Junk in the Attic</h1>
             <thead>
-            <th>Junk Type</th>
-            <th>Poster</th>
-            <th>Location</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Currently in Use by</th>
-            <th>Action</th>
+                <th>Junk Type</th>
+                <th>Poster</th>
+                <th>Location</th>
+                <th>Description</th>
+                <th>Family</th>
+                <th>Holder</th>
+                <th>Action</th>
             </thead>
 
-            {% for junk in allJunk %}   
-                {% if job not in thisUser.on_the_job.all %}             
+            {% for junk in allJunk %}          
                 <tr class="readableTableData">
-                    <td>{{junk.title}}</td><!--TITLE-->
+                    <td>{{junk.name}}</td><!--NAME OF JUNK -->
                     <td>{{junk.poster.username}}</td><!--POSTER-->
                     <td>{{junk.location}}</td><!--LOCATION-->
                     <td>{{junk.description}}</td><!--DESCRIPTION-->                    
-                    <td>{% for category in job.category.all %}{{category.title}}{% endfor %}</td><!--CATEGORY-->                    
-                    <td>{% for worker in job.workers.all %}{{worker.username}}<br>{% endfor %}</td><!--WORKERS-->
+                    <td>{% for family in junk.family.all %}{{family.name}}{% endfor %}</td><!--FAMILY-->                    
+                    <td>{{junk.holder.username}}</td><!--Holder-->
                     <td><!--ACTIONS-->                        
-                        <a href="/belt/{{job.id}}">View</a> <br><!--VIEW-->                        
-                        {% if thisUser not in job.workers.all %}
-                        <a href="/belt/takejob/{{job.id}}" style="color: green">Take Job</a><br> <!--WORKER BUTTON-->
+                        <a href="/attic/{{junk.id}}">View Junk</a> <br><!--VIEW-->                        
+                        {% if thisUser != junk.holder %}
+                        <a href="/attic/takejob/{{junk.id}}" style="color: green">Reserve Junk</a><br> <!--WORKER BUTTON-->
                         {% endif %}
-                        {% if thisUser in job.workers.all %}
-                        <a href="/belt/quitjob/{{job.id}}" style="color: purple">Quit Job</a><br> <!--QUIT BUTTON-->
+                        {% if thisUser == junk.holder %}
+                        <a href="/attic/quitjob/{{junk.id}}" style="color: purple">Return Junk</a><br> <!--QUIT BUTTON-->
                         {% endif %}
-                        {% if thisUser.id == job.poster.id %}
-                        <a href="/belt/delete/{{job.id}}" style="color: red">Delete</a><br><!--DELETE-->
+                        {% if thisUser.id == junk.poster.id %}
+                        <a href="/attic/delete/{{junk.id}}" style="color: red">Delete</a><br><!--DELETE-->
                         {% endif %}
                     </td><!--ACTIONS-->
-                </tr>    
-                {% endif %}            
+                </tr>           
             {% endfor %}
             
-        </table><!--JOB TABLE END-->
-        <table class="table"><!--JOB TABLE-->
-            <h1>Junk you are Currently renting</h1>
-            <thead>
-            <th>Job</th>
-            <th>Poster</th>
-            <th>Location</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>On The Job</th>
-            <th>Action</th>
-            </thead>
+        </table><!--JUNK TABLE END-->
 
-            {% for job in thisUser.on_the_job.all %}                
-                <tr class="readableTableData">
-                    <td>{{job.title}}</td><!--TITLE-->
-                    <td>{{job.poster.username}}</td><!--POSTER-->
-                    <td>{{job.location}}</td><!--LOCATION-->
-                    <td>{{job.description}}</td><!--DESCRIPTION-->
-                    <td>{{job.category.title}}</td><!--CATEGORY-->
-                    <td>{% for worker in job.workers.all %}{{worker.username}}<br>{% endfor %}</td><!--WORKERS-->
-                    <td><!--ACTIONS-->                        
-                        <a href="/belt/{{job.id}}">View</a> <br><!--VIEW-->                        
-                        {% if thisUser not in job.workers.all %}
-                        <a href="/belt/takejob/{{job.id}}" style="color: green">Take Job</a><br> <!--WORKER BUTTON-->
-                        {% endif %}
-                        {% if thisUser in job.workers.all %}
-                        <a href="/belt/quitjob/{{job.id}}" style="color: purple">Quit Job</a><br> <!--QUIT BUTTON-->
-                        {% endif %}
-                        <a href="/belt/delete/{{job.id}}" style="color: red">Job Done!</a><br><!--DELETE-->
-                        
-                    </td><!--ACTIONS-->
-                </tr>                
-            {% endfor %}
+            <table class="table"><!--CREATION TABLE-->
+                <tr>
+                    <td>
+                        <form action="/attic/addJunk" class="table" method="POST"><!--JUNK FORM-->
+                                {% csrf_token %}
+                            <h2>Put Junk in Attic</h2>
+                            <b>Name:</b> <input type="text" name="name" placeholder="Name your Junk"><br>
+                            <b>Description:</b> <br> <textarea name="description" id="" cols="30" rows="10" placeholder="Describe your Junk"></textarea>
+                            <input type="submit" >
+                        </form><!--JUNK FORM END-->
+                    </td>
+                </tr>
+            </table><!--CREATION TABLE END-->
             
         </table><!--JOB TABLE END-->
         <a href="/">GO TO LOGIN PAGE</a>     <br>       
