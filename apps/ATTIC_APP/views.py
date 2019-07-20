@@ -23,14 +23,11 @@ def index(request): #SECOND INDEX IE MAIN STORE PAGE
         return redirect('/')
 
 def addJunk(request): #PROCESS ROUTE FOR ADDING JUNK
-    try:
-        poster = request.session['user_live']
-        poster = Users.objects.get(id=poster)
-        junkName = request.POST['name']
-        junkDesc = request.POST['description']
-        if junkName != '':
-            Junk.objects.create(name=junkName, description=junkDesc, poster=poster, holder=poster)    
-        return redirect('/attic')
-    except:
-        messages.error(request, 'Must be logged in first/Failed at addJunk')
-        return redirect('/')
+
+    poster = request.session['user_live']
+    poster = Users.objects.get(id=poster)
+    junkName = request.POST['name']
+    junkDesc = request.POST['description']
+    if junkName != '':
+        Junk.objects.create(name=junkName, description=junkDesc, poster=poster, holder=poster)    
+    return redirect('/attic')

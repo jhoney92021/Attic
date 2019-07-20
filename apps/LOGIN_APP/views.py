@@ -32,7 +32,7 @@ def processRegistration(request): #REGISTRATION PROCESS ROUTE
         password= newUserPassEncrypt
            )
         request.session['user_live'] = newUser.id
-        return redirect('/success')
+        return redirect('/attic')
 
 def processLogin(request): #LOGIN PROCESS ROUTE    
     errors = Users.objects.loginVal(request.POST)
@@ -43,7 +43,7 @@ def processLogin(request): #LOGIN PROCESS ROUTE
 
     userQuery = Users.objects.get(email= request.POST['email'])
     request.session['user_live'] = userQuery.id
-    return redirect('/success' )
+    return redirect('/attic' )
 
 #END_LOGIN_PAGE_ROUTES
 #END_LOGIN_PAGE_ROUTES

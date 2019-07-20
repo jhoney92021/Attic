@@ -35,9 +35,10 @@
                     <td>{{junk.location}}</td><!--LOCATION-->
                     <td>{{junk.description}}</td><!--DESCRIPTION-->                    
                     <td>{% for family in junk.family.all %}{{family.name}}{% endfor %}</td><!--FAMILY-->                    
-                    <td>{{junk.holder.username}}</td><!--Holder-->
+                    <td>{{junk.holder.username}}</td><!--HOLDER-->
                     <td><!--ACTIONS-->                        
-                        <a href="/attic/{{junk.id}}">View Junk</a> <br><!--VIEW-->                        
+                        <a href="/user{{junk.poster.id}}">View Poster</a> <br><!--VIEW POSTER-->                        
+                        <a href="/attic/{{junk.id}}">View Junk</a> <br><!--VIEW JUNK-->                        
                         {% if thisUser != junk.holder %}
                         <a href="/attic/takejob/{{junk.id}}" style="color: green">Reserve Junk</a><br> <!--WORKER BUTTON-->
                         {% endif %}
@@ -68,6 +69,7 @@
             </table><!--CREATION TABLE END-->
             
         </table><!--JOB TABLE END-->
+        <a href="/user{{thisUser.id}}">GO TO YOUR PAGE</a> <br> 
         <a href="/">GO TO LOGIN PAGE</a>     <br>       
     </div><!-- CONTAINER -->
 </body>

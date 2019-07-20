@@ -25,30 +25,30 @@
             </thead>
         </table><!--GENERAL INFO-->
 
-        <table class="table"><!--FAVORITE STUFF-->
-            <h5>Favorite Books:</h5>        
-            {% for books in thisUser.favorite_book.all %}
+        <table class="table"><!--JUNK POSTED-->
+            <h5>Junk Posted:</h5>        
+            {% for junk in thisUser.posted.all %}
                 <tr>
                     <td>
-                        <span style="color: green; font-weight: 600">{{books.title}}</span> 
+                        <span style="color: green; font-weight: 600">{{junk.name}}</span> 
                     </td>
                 </tr>
             {% endfor %}
-        </table><!--FAVORITE BOOKS-->
-        <table class="table"><!--FAVORITE AUTHORS-->
-            <h5>Favorite Authors:</h5>  
-            {% for authors in thisUser.favorite_author.all %}
+        </table><!--JUNK POSTED-->
+        <table class="table"><!--JUNK HOLDING-->
+            <h5>Junk Holding:</h5>  
+            {% for junk in thisUser.holding.all %}
                 <tr>
                     <td>
-                        <span style="color: green; font-weight: 600">{{authors.fname}}</span> 
-                        <span style="color: green; font-weight: 600">{{authors.lname}}</span> 
+                        <span style="color: green; font-weight: 600">{{junk.name}}</span> 
+                        <span style="color: green; font-weight: 600">{{junk.name}}</span> 
                     </td>
                 </tr>
             {% endfor %}
-        </table><!--FAVORITE STUFF-->
+        </table><!--JUNK HOLDING-->
 
-        <a href="/books">GO TO MAIN PAGE</a>     <br>      
-        <a href="/success">GO TO SUCCESS PAGE</a>     
+        <a href="/attic">GO TO ATTIC</a>     <br>      
+        <a href="/logout">Logout</a>     
     </div><!--CONTAINER-->
 </body>
 </html>

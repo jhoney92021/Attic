@@ -13,8 +13,8 @@ from apps.LOGIN_APP.models import Users
 class Junk(models.Model):#ALSO REFFERED TO AS JUNK
     name = models.CharField(max_length=20)#NAME OF JUNK
     description = models.TextField()#DESCRIPTION OF JUNK
-    poster = models.OneToOneField(Users, related_name='posted_junk')#PERSON WHO OWNS JUNK
-    holder = models.OneToOneField(Users, related_name='rented')#PERSON IN POSSESSION  OF THE JUNK, OWNER, OR RENTER ETC 
+    poster = models.ForeignKey(Users, related_name='posted')#PERSON WHO OWNS JUNK
+    holder = models.ForeignKey(Users, related_name='holding')#PERSON IN POSSESSION  OF THE JUNK, OWNER, OR RENTER ETC 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
