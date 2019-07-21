@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{thisUser.username}}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'LOGIN_APP/css/style.css' %}"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+
+    <div class="container">
+        <table class="table"><!--GENERAL INFO-->
+            <thead>
+                <td>
+                    <h5>Name:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisJunk.name}}</span>           
+                    <h5>Description:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisJunk.description}}</span>           
+                    <h5>Poster:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisJunk.poster}}</span>           
+                    <h5>Holder:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisJunk.holder}}</span>           
+                </td>          
+            </thead>
+        </table><!--GENERAL INFO-->
+
+        <a href="/attic">GO TO ATTIC</a>     <br>      
+        <a href="/logout">Logout</a>     
+    </div><!--CONTAINER-->
+</body>
+</html>

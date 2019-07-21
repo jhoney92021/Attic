@@ -31,3 +31,11 @@ def addJunk(request): #PROCESS ROUTE FOR ADDING JUNK
     if junkName != '':
         Junk.objects.create(name=junkName, description=junkDesc, poster=poster, holder=poster)    
     return redirect('/attic')
+
+def junkPage(request, junkID): #FOR RENDERING A USERS PAGE
+    context = {
+        'thisJunk': Junk.objects.get(id= junkID)
+
+    }
+
+    return render(request, "ATTIC_APP/junkPage.html", context)
