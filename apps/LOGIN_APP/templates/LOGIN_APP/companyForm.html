@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{thisUser.username}}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'LOGIN_APP/css/style.css' %}"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+
+    
+    <div class="container">
+        <div class="row">
+            <div class="registration">
+                <form action="/process/registration/company/{{thisUser.id}}" method="POST" >
+                    {% csrf_token %}
+                    <table class="table">
+    
+                            <thead>Registration</thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        Company Name: <input type="text" name="name">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Description: <input type="text" name="description">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="submit" name="Register" value="Register">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+
+                </div> <!--REGISTRATION--> 
+        </div> <!--ROWS-->  
+            <a href="/attic">Go To Attic</a>     <br>      
+            <a href="/user{{thisUser.id}}">Go To Your Page</a> <br>      
+            <a href="/logout">Logout</a>     
+    </div><!--CONTAINER-->
+</body>
+</html>

@@ -46,8 +46,26 @@
                 </tr>
             {% endfor %}
         </table><!--JUNK HOLDING-->
+        <table class="table"><!--COMPANIES ADMINSTRATING-->
+            <thead>
+                <th><h5>Companies Administrating:</h5></th>   
+                <th><h5>Actions</h5></th>
+            </thead>
+            {% for company in thisUser.company_administrator.all %}
+            <tr>
+                <td>
+                    <span style="color: green; font-weight: 600">{{company.name}}</span>
+                </td>
+                <td>
+                        <a href="/company{{company.id}}">View Company Page</a> <br><!--VIEW COMPANY PAGE--> 
+                </td>
+            </tr>
+            {% endfor %}
+        </table><!--COMPANIES ADMINSTRATING-->
 
-        <a href="/attic">GO TO ATTIC</a>     <br>      
+        <br>
+        <a href="/attic">Go To Attic</a>     <br>      
+        <a href="/process/registrationform/company/{{thisUser.id}}">Register a Company</a><br>       
         <a href="/logout">Logout</a>     
     </div><!--CONTAINER-->
 </body>
