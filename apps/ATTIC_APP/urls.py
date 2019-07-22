@@ -9,6 +9,8 @@ from apps.ATTIC_APP import views
 #ATTIC_APP_URLS
 #ATTIC_APP_URLS     
 urlpatterns = [
+    url(r'^reservejunk/(?P<junkID>\d+)$', views.reserveJunk),
+    url(r'^deletejunk/(?P<junkID>\d+)$', views.deleteJunk),
     url(r'^(?P<junkID>\d+)$', views.junkPage),#JUNK PAGE
     url(r'^addJunk$', views.addJunk),#ADD NEW JUNK
     url(r'^$', views.index),

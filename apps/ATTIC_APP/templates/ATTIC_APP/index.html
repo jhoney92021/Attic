@@ -40,13 +40,13 @@
                         <a href="/user{{junk.poster.id}}">View Poster</a> <br><!--VIEW POSTER-->                        
                         <a href="/attic/{{junk.id}}">View Junk</a> <br><!--VIEW JUNK-->                        
                         {% if thisUser != junk.holder %}
-                        <a href="/attic/takejob/{{junk.id}}" style="color: green">Reserve Junk</a><br> <!--WORKER BUTTON-->
+                        <a href="/attic/reservejunk/{{junk.id}}" style="color: green">Reserve Junk</a><br> <!--WORKER BUTTON-->
                         {% endif %}
                         {% if thisUser == junk.holder %}
-                        <a href="/attic/quitjob/{{junk.id}}" style="color: purple">Return Junk</a><br> <!--QUIT BUTTON-->
+                        <a href="/attic/returnjunk/{{junk.id}}" style="color: purple">Return Junk</a><br> <!--QUIT BUTTON-->
                         {% endif %}
                         {% if thisUser.id == junk.poster.id %}
-                        <a href="/attic/delete/{{junk.id}}" style="color: red">Delete</a><br><!--DELETE-->
+                        <a href="/attic/deletejunk/{{junk.id}}" style="color: red">Delete</a><br><!--DELETE-->
                         {% endif %}
                     </td><!--ACTIONS-->
                 </tr>           

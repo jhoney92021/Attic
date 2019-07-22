@@ -39,3 +39,14 @@ def junkPage(request, junkID): #FOR RENDERING A USERS PAGE
     }
 
     return render(request, "ATTIC_APP/junkPage.html", context)
+
+def reserveJunk(request, junkID):
+    holder = Users.objects.get(id = request.session['user_live'])
+    reservedjunk = Junk.objects.get(id = junkID)
+    holder.holding.add(reservedjunk)
+    return redirect(f'/user{holder.id}')
+
+def deleteJunk(request, junkID):
+    yourJunk = Junk.objects.get(id = junkID)
+    yourJunk.delete()
+    return redirect('/attic')
