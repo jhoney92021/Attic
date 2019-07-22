@@ -29,7 +29,11 @@ def addJunk(request): #PROCESS ROUTE FOR ADDING JUNK
     junkName = request.POST['name']
     junkDesc = request.POST['description']
     if junkName != '':
-        Junk.objects.create(name=junkName, description=junkDesc, poster=poster, holder=poster)    
+        Junk.objects.create(
+            name=junkName, 
+            description=junkDesc, 
+            poster=poster, 
+            holder=poster)    
     return redirect('/attic')
 
 def junkPage(request, junkID): #FOR RENDERING A USERS PAGE
@@ -50,3 +54,26 @@ def deleteJunk(request, junkID):
     yourJunk = Junk.objects.get(id = junkID)
     yourJunk.delete()
     return redirect('/attic')
+
+def reviewPoster(request, user_id):
+    thisUser = Users.objects.get(id = request.session['user_live'])
+    new_review = Review.objects.create(
+        content = request.POST['review'],
+        rating = request.POST['rate'],
+        creator = thisUser
+    )
+    subject = Users.objects.get(id = user_id)
+    subject.reviewed.add(new_review)
+    return redirect(f'/user{user_id}')
+
+def reviewJunk(request, junkID):
+    print('*******************************')
+    thisUser = Users.objects.get(id = request.session['user_live'])
+    new_review = Review.objects.create(
+        content = request.POST['review'],
+        rating = request.POST['rate'],
+        creator = thisUser
+    )
+    subject = Junk.objects.get(id = junkID)
+    subject.reviewed.add(new_review)
+    return redirect(f'/attic/{junkID}')

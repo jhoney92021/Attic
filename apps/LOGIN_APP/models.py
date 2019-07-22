@@ -93,13 +93,6 @@ class Users(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = Manager()
 
-class Company(models.Model):#A COMPANY IS USER, WHO IS LEGALLY A LLC OR HIGHER
-    name = models.CharField(max_length=20)#NAME OF COMPANY
-    description = models.TextField()#DESCRIPTION OF COMPANY
-    administrator = models.OneToOneField(Users, related_name='company_administrator')#COMPANIES SINGLE OWNER
-    employee = models.ForeignKey(Users, related_name='company_employee', default=administrator)#OTHER USERS HOW HAVE ACCESS TO COMPANY
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 #END TABLE MODELS
 #END TABLE MODELS

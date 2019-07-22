@@ -73,7 +73,6 @@ def logout(request): #CLEAR USER IN SESSION
 def userPage(request, userID): #FOR RENDERING A USERS PAGE
     context = {
         'thisUser': Users.objects.get(id= userID)
-
     }
 
     return render(request, "LOGIN_APP/userPage.html", context)

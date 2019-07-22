@@ -27,6 +27,30 @@
                 </td>          
             </thead>
         </table><!--GENERAL INFO-->
+        <table class="table"><!--thisJunk's reviews-->
+            <h5>Reviews on {{thisJunk.name}}:</h5>  
+            {% for review in thisJunk.reviewed.all %}
+                <tr>
+                    <td>
+                        <span style="color: green; font-weight: 600">{{review.creator.fname}} {{review.creator.lname}}</span>  <br>
+                        <span style="color: green; font-weight: 600">{{review.content}}</span>  <br>
+                        <span style="color: green; font-weight: 600">{{review.rating}} out of 5</span> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table><!--thisJunk's reviews-->
+        <form action="/attic/review_junk/{{thisJunk.id}}" method="POST">
+            {% csrf_token %}
+            <textarea name="review"></textarea>
+            <select name="rate">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <input type="submit" value="Leave a review for this item!">
+        </form>
 
         <a href="/attic">GO TO ATTIC</a>     <br>      
         <a href="/logout">Logout</a>     
