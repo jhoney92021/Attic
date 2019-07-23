@@ -21,9 +21,25 @@
                     
                     <h5>Birthday:</h5> 
                     <span style="color: green; font-weight: 600">{{thisUser.birthday}}</span>                
+                    
+                    <h5>Location:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisUser.location}}</span>                
                 </td>          
             </thead>
         </table><!--GENERAL INFO-->
+        
+        <table class="table"><!--UPDATE LOCATION TABLE-->
+            <tr>
+                <td>
+                    <form action="/editaddress/{{thisUser.id}}" class="table" method="POST">
+                            {% csrf_token %}
+                        <h4>Update your location</h4>
+                        <b>Location:</b> <input type="text" name="location" placeholder="New Address"><br>
+                        <input type="submit" value="Update your location!">
+                    </form><!--JUNK FORM END-->
+                </td>
+            </tr>
+        </table><!--UPDATE LOCATION TABLE END-->
 
         <table class="table"><!--JUNK POSTED-->
             <h5>Junk Posted:</h5>        

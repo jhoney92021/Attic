@@ -124,6 +124,12 @@ def processRegistrationCompany(request, userID): #COMPANY REGISTRATION PROCESS R
         administrator= Users.objects.get(id=userID),
            )
         return redirect('/user%s' %(userID))
+    
+def editAddress(request, userID):
+    liveUser = Users.objects.get(id = userID)
+    liveUser.location = request.POST['location']
+    liveUser.save()
+    return redirect(f'/user{userID}')
 
 #LOGIN_APP_VIEWS
 #LOGIN_APP_VIEWS

@@ -25,7 +25,7 @@
                     <span style="color: green; font-weight: 600">{{tribe.name}}</span><br>      
                     {% endfor %}     
                     <h5>Location:</h5> 
-                    <span style="color: green; font-weight: 600">{{thisJunk.location}}</span>           
+                    <span style="color: green; font-weight: 600">{{thisJunk.poster.location}}</span>           
                     <h5>Price Per Day:</h5> 
                     <span style="color: green; font-weight: 600">{{thisJunk.price}}</span>           
                     <h5>Poster:</h5> 
@@ -95,12 +95,8 @@
                 <td>
                     <form action="/attic/editjunk/{{thisJunk.id}}" class="table" method="POST"><!--JUNK FORM-->
                             {% csrf_token %}
-                        <h4>Update {{thisJunk.name}}</h4>
-                        <b>Name:</b> <input type="text" name="name" placeholder="Update your Junk"><br>
-                        <b>Location:</b> <input type="text" name="location" placeholder="Update where your junk is at."><br>
-                        <b>Price Per Day:</b> <input type="number" name="price" placeholder="Update charge."><br>
-                        <b>Description:</b> <br> <textarea name="description" id="" cols="30" rows="10" placeholder="Redescribe your junk."></textarea>
-                        <input type="submit" value="Upload images of your junk.">
+                        
+                        <input type="submit" value="Upload an image of your junk.">
                     </form><!--JUNK FORM END-->
                 </td>
             </tr>
