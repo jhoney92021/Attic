@@ -24,6 +24,10 @@
                     {% for tribe in thisJunk.tribe.all %}
                     <span style="color: green; font-weight: 600">{{tribe.name}}</span><br>      
                     {% endfor %}     
+                    <h5>Location:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisJunk.location}}</span>           
+                    <h5>Price Per Day:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisJunk.price}}</span>           
                     <h5>Poster:</h5> 
                     <span style="color: green; font-weight: 600">{{thisJunk.poster.username}}</span>           
                     <h5>Holder:</h5> 
