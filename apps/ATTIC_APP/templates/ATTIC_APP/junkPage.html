@@ -20,10 +20,14 @@
                     <span style="color: green; font-weight: 600">{{thisJunk.name}}</span>           
                     <h5>Description:</h5> 
                     <span style="color: green; font-weight: 600">{{thisJunk.description}}</span>           
+                    <h5>Tribe:</h5> 
+                    {% for tribe in thisJunk.tribe.all %}
+                    <span style="color: green; font-weight: 600">{{tribe.name}}</span><br>      
+                    {% endfor %}     
                     <h5>Poster:</h5> 
-                    <span style="color: green; font-weight: 600">{{thisJunk.poster}}</span>           
+                    <span style="color: green; font-weight: 600">{{thisJunk.poster.username}}</span>           
                     <h5>Holder:</h5> 
-                    <span style="color: green; font-weight: 600">{{thisJunk.holder}}</span>           
+                    <span style="color: green; font-weight: 600">{{thisJunk.holder.username}}</span>           
                 </td>          
             </thead>
         </table><!--GENERAL INFO-->
@@ -37,6 +41,7 @@
                         <span style="color: green; font-weight: 600">{{review.creator.fname}} {{review.creator.lname}}</span>  <br>
                         <span style="color: green; font-weight: 600">{{review.content}}</span>  <br>
                         <span style="color: green; font-weight: 600">{{review.rating}} out of 5</span> 
+                        <h3>test</h3>*{{review.rating}}
                     </td>
                 </tr>
             {% endfor %}

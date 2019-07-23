@@ -4,6 +4,7 @@ from apps.LOGIN_APP.models import Users
 from apps.ATTIC_APP.models import Junk, Tribe, Review
 import random, datetime, bcrypt
 
+
 #ATTIC_APP_VIEWS
 #ATTIC_APP_VIEWS
 #ATTIC_APP_VIEWS
@@ -14,7 +15,7 @@ def index(request): #SECOND INDEX IE MAIN STORE PAGE
         context = {
             'sessionUser': Users.objects.get(id=sessionUser),
             'allJunk': Junk.objects.all(),
-            'allFamilies': Family.objects.all(),
+            'allTribes': Tribe.objects.all(),
         }
         return render(request,'ATTIC_APP/index.html', context)
 
@@ -29,13 +30,16 @@ def addJunk(request): #PROCESS ROUTE FOR ADDING JUNK
     junkName = request.POST['name']
     junkDesc = request.POST['description']
     if junkName != '':
-        Junk.objects.create(name=junkName, description=junkDesc, poster=poster, holder=poster)    
+        Junk.objects.create(
+            name=junkName,
+            description=junkDesc,
+            poster=poster,
+            holder=poster)    
     return redirect('/attic')
 
 def junkPage(request, junkID): #FOR RENDERING A USERS PAGE
     context = {
         'thisJunk': Junk.objects.get(id= junkID)
-
     }
 
     return render(request, "ATTIC_APP/junkPage.html", context)
@@ -63,7 +67,6 @@ def reviewPoster(request, user_id):
     return redirect(f'/user{user_id}')
 
 def reviewJunk(request, junkID):
-    print('*******************************')
     thisUser = Users.objects.get(id = request.session['user_live'])
     new_review = Review.objects.create(
         content = request.POST['review'],
@@ -73,3 +76,10 @@ def reviewJunk(request, junkID):
     subject = Junk.objects.get(id = junkID)
     subject.reviewed.add(new_review)
     return redirect(f'/attic/{junkID}')
+
+def addTribe(request):
+    newTribe = Tribe.objects.get(name=request.POST['addTribe']) 
+    junk = Junk.objects.get(id=request.POST['thisJunk'])
+    newTribe.junk.add(junk)
+
+    return redirect('/attic')

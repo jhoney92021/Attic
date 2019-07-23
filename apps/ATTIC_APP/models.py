@@ -14,7 +14,7 @@ class Junk(models.Model):#ALSO REFFERED TO AS JUNK
     name = models.CharField(max_length=20)#NAME OF JUNK
     description = models.TextField()#DESCRIPTION OF JUNK
     location = models.CharField(max_length=20, default='None added yet')#LOCATION OF JUNK    
-    price = models.IntegerField()#PRICE OF JUNK
+    price = models.IntegerField(default=5)#PRICE OF JUNK
     poster = models.ForeignKey(Users, related_name='posted')#PERSON WHO OWNS JUNK
     holder = models.ForeignKey(Users, related_name='holding')#PERSON IN POSSESSION  OF THE JUNK, OWNER, OR RENTER ETC 
     reservation = models.ManyToManyField(Users, related_name='reserved')#LIST OF USERS WHO HAVE RESERVED AN ITEM OF JUNK
@@ -24,7 +24,7 @@ class Junk(models.Model):#ALSO REFFERED TO AS JUNK
 class Tribe(models.Model):#FOR TAGGING AN ITEM AS 'AUTOMOTIVE', OR 'KITCHEN
     name = models.CharField(max_length=20)#NAME OF FAMILY
     description = models.TextField()#DESCRIPTION OF FAMILY
-    junk = models.ManyToManyField(Junk, related_name='tribe')
+    junk = models.ManyToManyField(Junk, related_name='tribe')#JUNK CATEGORY
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
