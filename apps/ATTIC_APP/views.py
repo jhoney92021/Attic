@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
 from apps.LOGIN_APP.models import Users
-from apps.ATTIC_APP.models import Junk, Family, Review
+from apps.ATTIC_APP.models import Junk, Tribe, Review
 import random, datetime, bcrypt
 
 #ATTIC_APP_VIEWS
@@ -12,7 +12,7 @@ def index(request): #SECOND INDEX IE MAIN STORE PAGE
     try:
         sessionUser = request.session['user_live']
         context = {
-            'thisUser': Users.objects.get(id=sessionUser),
+            'sessionUser': Users.objects.get(id=sessionUser),
             'allJunk': Junk.objects.all(),
             'allFamilies': Family.objects.all(),
         }
@@ -39,3 +39,37 @@ def junkPage(request, junkID): #FOR RENDERING A USERS PAGE
     }
 
     return render(request, "ATTIC_APP/junkPage.html", context)
+
+def reserveJunk(request, junkID):
+    holder = Users.objects.get(id = request.session['user_live'])
+    reservedjunk = Junk.objects.get(id = junkID)
+    holder.holding.add(reservedjunk)
+    return redirect(f'/user{holder.id}')
+
+def deleteJunk(request, junkID):
+    yourJunk = Junk.objects.get(id = junkID)
+    yourJunk.delete()
+    return redirect('/attic')
+
+def reviewPoster(request, user_id):
+    thisUser = Users.objects.get(id = request.session['user_live'])
+    new_review = Review.objects.create(
+        content = request.POST['review'],
+        rating = request.POST['rate'],
+        creator = thisUser
+    )
+    subject = Users.objects.get(id = user_id)
+    subject.reviewed.add(new_review)
+    return redirect(f'/user{user_id}')
+
+def reviewJunk(request, junkID):
+    print('*******************************')
+    thisUser = Users.objects.get(id = request.session['user_live'])
+    new_review = Review.objects.create(
+        content = request.POST['review'],
+        rating = request.POST['rate'],
+        creator = thisUser
+    )
+    subject = Junk.objects.get(id = junkID)
+    subject.reviewed.add(new_review)
+    return redirect(f'/attic/{junkID}')

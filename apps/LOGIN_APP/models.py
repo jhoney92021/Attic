@@ -85,6 +85,7 @@ class Manager(models.Manager):
 class Users(models.Model):
     fname = models.CharField(max_length=20, default='A person with no name apparently')
     lname = models.CharField(max_length=20, default='A person with no name apparently')
+    location = models.CharField(max_length=20, default='None added yet')#LOCATION OF USER
     username = models.CharField(max_length=20, default='not a required field')
     birthday = models.DateField(default= datetime.date.today)
     email = models.CharField(max_length=80, default='Seriously, no email? it is 2019 get with it man')
@@ -96,10 +97,11 @@ class Users(models.Model):
 class Company(models.Model):#A COMPANY IS USER, WHO IS LEGALLY A LLC OR HIGHER
     name = models.CharField(max_length=20)#NAME OF COMPANY
     description = models.TextField()#DESCRIPTION OF COMPANY
-    administrator = models.OneToOneField(Users, related_name='company_administrator')#COMPANIES SINGLE OWNER
-    employee = models.ForeignKey(Users, related_name='company_employee', default=administrator)#OTHER USERS HOW HAVE ACCESS TO COMPANY
+    administrator = models.ForeignKey(Users, related_name='company_administrator')#COMPANIES SINGLE OWNER
+    employee = models.ManyToManyField(Users, related_name='company_employee', default=administrator)#OTHER USERS HOW HAVE ACCESS TO COMPANY
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = Manager()
 
 #END TABLE MODELS
 #END TABLE MODELS

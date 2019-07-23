@@ -9,9 +9,13 @@ from apps.LOGIN_APP import views
 #LOGIN_APP_URLS                    
 #LOGIN_APP_URLS                    
 urlpatterns = [
-    url(r'^process/registration$', views.processRegistration), # REGISTRATION PROCESS ROUTE
+    url(r'^process/registrationform/company/(?P<userID>\d+)$', views.companyRegForm), #COMPANY REGISTRATION PROCESS ROUTE
+    url(r'^process/registration/company/(?P<userID>\d+)$', views.processRegistrationCompany), #COMPANY REGISTRATION PROCESS ROUTE
+    url(r'^process/registration$', views.processRegistration), #USER REGISTRATION PROCESS ROUTE
     url(r'^process/login$', views.processLogin), # LOGIN PROCESS ROUTE
+    url(r'^company(?P<companyID>\d+)$', views.companyPage), # COMPANY PAGE
     url(r'^user(?P<userID>\d+)$', views.userPage), # USERS PAGE
+    url(r'^addEmployee$', views.addEmployee), # ROUTE TO ADD EMPLOYEE
     url(r'^success/$', views.success), # SPLASH PAGE
     url(r'^logout/$', views.logout), # LOGOUT PAGE
     url(r'^$', views.index),
