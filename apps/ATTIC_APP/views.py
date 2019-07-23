@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
 from apps.LOGIN_APP.models import Users
-from apps.ATTIC_APP.models import Junk, Family, Review
+from apps.ATTIC_APP.models import Junk, Tribe, Review
 import random, datetime, bcrypt
 
 #ATTIC_APP_VIEWS
