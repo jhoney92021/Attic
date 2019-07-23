@@ -27,7 +27,7 @@
                 <th>Poster</th>
                 <th>Location</th>
                 <th>Description</th>
-                <th>Family</th>
+                <th>Tribes</th>
                 <th>Holder</th>
                 <th>Action</th>
             </thead>
@@ -38,7 +38,23 @@
                     <td>{{junk.poster.username}}</td><!--POSTER-->
                     <td>{{junk.location}}</td><!--LOCATION-->
                     <td>{{junk.description}}</td><!--DESCRIPTION-->                    
-                    <td>{% for family in junk.family.all %}{{family.name}}{% endfor %}</td><!--FAMILY-->                    
+                    <td>
+                        {% for tribe in junk.tribe.all %}{{tribe.name}}<br>{% endfor %}
+                        {% if sessionUser == junk.poster %}
+                            <form action="/attic/addTribe" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="thisJunk" value="{{junk.id}}">
+                                <select name="addTribe">
+                                    <option value="Tools">Tools</option>
+                                    <option value="Auto">Auto</option>
+                                    <option value="Kitchen">Kitchen</option>
+                                    <option value="Sport">Sport</option>
+                                    <option value="Melee">Melee</option>
+                                </select>
+                                <input type="submit" value="New Tribe">
+                            </form>
+                        {% endif %}
+                    </td><!--FAMILY-->                    
                     <td>{{junk.holder.username}}</td><!--HOLDER-->
                     <td style="width: 150px;"><!--ACTIONS-->                        
                         <a href="/user{{junk.poster.id}}">View Poster</a> <br><!--VIEW POSTER-->                        
