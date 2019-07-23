@@ -29,6 +29,7 @@
                 <th>Description</th>
                 <th>Tribes</th>
                 <th>Per Day</th>
+                <th>Reserved By</th>
                 <th>Holder</th>
                 <th>Action</th>
             </thead>
@@ -56,19 +57,30 @@
                             </form>
                         {% endif %}
                     </td><!--TRIBES-->         
-                    <td>{{junk.price}}</td>           
+                    <td>${{junk.price}}</td>
+                    <td>{% for user in junk.reservation.all %}{{user.username}}<br>{% endfor %}</td>      
                     <td>{{junk.holder.username}}</td><!--HOLDER-->
                     <td style="width: 150px;"><!--ACTIONS-->                        
                         <a href="/user{{junk.poster.id}}">View Poster</a> <br><!--VIEW POSTER-->                        
-                        <a href="/attic/{{junk.id}}">View Junk</a> <br><!--VIEW JUNK-->                        
-                        {% if sessionUser != junk.holder %}
-                        <a href="/attic/takejob/{{junk.id}}" style="color: green">Reserve Junk</a><br> <!--WORKER BUTTON-->
+                        <a href="/attic/{{junk.id}}">View Junk</a> <br><!--VIEW JUNK-->   
+                        {% if sessionUser != junk.holder %}     <!--SHOW IF NOT JUNK HOLDER-->   
+                            {% if sessionUser == junk.reservation.first %} <!--SHOW IF USER FIRST IN LINE-->   
+                                {% if junk.holder == junk.poster %}
+                                    <a href="/attic/hold/{{junk.id}}" style="color: yellow">Hold Junk</a><br> <!--HOLD BUTTON-->  
+                                {% endif %}
+                            {% endif %} <!-- END SHOW IF USER FIRST IN LINE-->   
+                        {% endif %} <!--END SHOW IF NOT JUNK HOLDER-->  
+                        {% if sessionUser == junk.holder %}              
+                            <a href="/attic/return/{{junk.id}}" style="color: brown">Return Junk</a><br> <!--RETURN BUTTON-->      
+                        {% endif %}          
+                        {% if sessionUser not in junk.reservation.all %}
+                            <a href="/attic/reserve/{{junk.id}}" style="color: green">Reserve Junk</a><br> <!--RESERVATION BUTTON-->
                         {% endif %}
-                        {% if sessionUser == junk.holder %}
-                        <a href="/attic/quitjob/{{junk.id}}" style="color: purple">Return Junk</a><br> <!--QUIT BUTTON-->
+                        {% if sessionUser in junk.reservation.all %}
+                            <a href="/attic/unreserve/{{junk.id}}" style="color: purple">UnReserve Junk</a><br> <!--UNRESERVARION BUTTON-->
                         {% endif %}
                         {% if sessionUser.id == junk.poster.id %}
-                        <a href="/attic/delete/{{junk.id}}" style="color: red">Delete</a><br><!--DELETE-->
+                            <a href="/attic/deletejunk/{{junk.id}}" style="color: red">Delete</a><br><!--DELETE-->
                         {% endif %}
                     </td><!--ACTIONS-->
                 </tr>           
