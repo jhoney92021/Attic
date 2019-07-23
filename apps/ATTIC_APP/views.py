@@ -12,9 +12,9 @@ def index(request): #SECOND INDEX IE MAIN STORE PAGE
     try:
         sessionUser = request.session['user_live']
         context = {
-            'thisUser': Users.objects.get(id=sessionUser),
+            'sessionUser': Users.objects.get(id=sessionUser),
             'allJunk': Junk.objects.all(),
-            'allFamilies': Family.objects.all(),
+            'allTribes': Tribe.objects.all(),
         }
         return render(request,'ATTIC_APP/index.html', context)
 
@@ -29,11 +29,7 @@ def addJunk(request): #PROCESS ROUTE FOR ADDING JUNK
     junkName = request.POST['name']
     junkDesc = request.POST['description']
     if junkName != '':
-        Junk.objects.create(
-            name=junkName, 
-            description=junkDesc, 
-            poster=poster, 
-            holder=poster)    
+        Junk.objects.create(name=junkName, description=junkDesc, poster=poster, holder=poster)    
     return redirect('/attic')
 
 def junkPage(request, junkID): #FOR RENDERING A USERS PAGE

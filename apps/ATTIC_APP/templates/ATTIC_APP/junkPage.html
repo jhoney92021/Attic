@@ -27,7 +27,9 @@
                 </td>          
             </thead>
         </table><!--GENERAL INFO-->
-        <table class="table"><!--thisJunk's reviews-->
+
+        
+        <table class="table"><!--ALL REVIEWS FOR THIS JUNK-->
             <h5>Reviews on {{thisJunk.name}}:</h5>  
             {% for review in thisJunk.reviewed.all %}
                 <tr>
@@ -38,19 +40,30 @@
                     </td>
                 </tr>
             {% endfor %}
-        </table><!--thisJunk's reviews-->
-        <form action="/attic/review_junk/{{thisJunk.id}}" method="POST">
-            {% csrf_token %}
-            <textarea name="review"></textarea>
-            <select name="rate">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-            <input type="submit" value="Leave a review for this item!">
-        </form>
+        </table><!--ALL REVIEWS FOR THIS JUNK-->
+
+        <table class="table">
+            <form action="/attic/review_junk/{{thisJunk.id}}" method="POST" ><!--REVIEW FORM FOR THIS JUNK-->
+                {% csrf_token %}
+                <tr><textarea name="review"></textarea></tr>                
+                <tr>
+                    <td>
+                        <select name="rate">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Leave a review for this item!">
+                    </td>
+                </tr>                
+            </form><!--REVIEW FORM FOR THIS JUNK-->
+        </table>
 
         <a href="/attic">GO TO ATTIC</a>     <br>      
         <a href="/logout">Logout</a>     

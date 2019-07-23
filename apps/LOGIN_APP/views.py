@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
-from apps.LOGIN_APP.models import Users
+from apps.LOGIN_APP.models import Users, Company
 import random, datetime, bcrypt
 
 #LOGIN_APP_VIEWS
@@ -73,9 +73,57 @@ def logout(request): #CLEAR USER IN SESSION
 def userPage(request, userID): #FOR RENDERING A USERS PAGE
     context = {
         'thisUser': Users.objects.get(id= userID)
+
     }
 
     return render(request, "LOGIN_APP/userPage.html", context)
+
+def companyPage(request, companyID): #FOR RENDERING A COMPANY PAGE
+    try:
+        liveUser = request.session['user_live']
+        context = {
+            'thisCompany': Company.objects.get(id= companyID),
+            'liveUser': Users.objects.get(id=liveUser),
+        }
+
+        return render(request, "LOGIN_APP/companyPage.html", context)
+    except:
+        messages.error(request, 'Must be logged in first/BROKE AT COMPANY PAGE')
+        return redirect('/')
+
+def addEmployee(request):#ADDING EMPLOYEES
+    newEmployee = request.POST['empname']
+    newEmployee = Users.objects.get(username=newEmployee)
+    thisCompany = request.POST['thisCompany']
+    thisCompany = Company.objects.get(id=thisCompany)
+    thisCompany.employee.add(newEmployee)
+    thisCompany.save()
+    return redirect('/company%s' %(thisCompany.id))
+    
+
+def companyRegForm(request, userID):#COMPANY REGISTRATION FORM
+    context = {
+        'thisUser': Users.objects.get(id= userID),
+
+    }
+
+    return render(request, "LOGIN_APP/companyForm.html", context)
+
+
+def processRegistrationCompany(request, userID): #COMPANY REGISTRATION PROCESS ROUTE
+    errors = Company.objects.sessionVal(request.POST)
+    if len(errors) > 1:
+        for key, val in errors.items():
+            messages.error(request, val)
+        return redirect('/')
+    else:
+
+        newCompany = Company.objects.create(
+        name= request.POST['name'],
+        description= request.POST['description'],
+        administrator= Users.objects.get(id=userID),
+           )
+        return redirect('/user%s' %(userID))
 
 #LOGIN_APP_VIEWS
 #LOGIN_APP_VIEWS

@@ -13,8 +13,12 @@
 <body>
     <div class="container">
         <div class="table">
-            <h1>Welcome, {{thisUser.username}}!</h1>
-            <a href="/logout">Logout</a>
+            <thead>                
+                <th><a href="/user{{sessionUser.id}}">Your Page</a></th>//
+                <th><a href="/logout">Logout</a></th>//
+                <th><a href="/">Login Page</a></th>
+            </thead>
+            <h1>Welcome, {{sessionUser.username}}!</h1>
         </div>
         <table class="table"><!--JUNK TABLE-->
             <h1>Junk in the Attic</h1>
@@ -36,17 +40,17 @@
                     <td>{{junk.description}}</td><!--DESCRIPTION-->                    
                     <td>{% for family in junk.family.all %}{{family.name}}{% endfor %}</td><!--FAMILY-->                    
                     <td>{{junk.holder.username}}</td><!--HOLDER-->
-                    <td><!--ACTIONS-->                        
+                    <td style="width: 150px;"><!--ACTIONS-->                        
                         <a href="/user{{junk.poster.id}}">View Poster</a> <br><!--VIEW POSTER-->                        
                         <a href="/attic/{{junk.id}}">View Junk</a> <br><!--VIEW JUNK-->                        
-                        {% if thisUser != junk.holder %}
-                        <a href="/attic/reservejunk/{{junk.id}}" style="color: green">Reserve Junk</a><br> <!--WORKER BUTTON-->
+                        {% if sessionUser != junk.holder %}
+                        <a href="/attic/takejob/{{junk.id}}" style="color: green">Reserve Junk</a><br> <!--WORKER BUTTON-->
                         {% endif %}
-                        {% if thisUser == junk.holder %}
-                        <a href="/attic/returnjunk/{{junk.id}}" style="color: purple">Return Junk</a><br> <!--QUIT BUTTON-->
+                        {% if sessionUser == junk.holder %}
+                        <a href="/attic/quitjob/{{junk.id}}" style="color: purple">Return Junk</a><br> <!--QUIT BUTTON-->
                         {% endif %}
-                        {% if thisUser.id == junk.poster.id %}
-                        <a href="/attic/deletejunk/{{junk.id}}" style="color: red">Delete</a><br><!--DELETE-->
+                        {% if sessionUser.id == junk.poster.id %}
+                        <a href="/attic/delete/{{junk.id}}" style="color: red">Delete</a><br><!--DELETE-->
                         {% endif %}
                     </td><!--ACTIONS-->
                 </tr>           
@@ -69,8 +73,7 @@
             </table><!--CREATION TABLE END-->
             
         </table><!--JOB TABLE END-->
-        <a href="/user{{thisUser.id}}">GO TO YOUR PAGE</a> <br> 
-        <a href="/">GO TO LOGIN PAGE</a>     <br>       
+  
     </div><!-- CONTAINER -->
 </body>
 </html>
