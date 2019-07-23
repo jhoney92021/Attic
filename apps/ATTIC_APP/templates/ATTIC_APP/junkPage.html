@@ -74,6 +74,24 @@
             </form><!--REVIEW FORM FOR THIS JUNK-->
         </table>
         {% endif %}
+        {% if thisJunk.poster.id == request.session.user_live %}
+        <table class="table"><!--UPDATE TABLE-->
+            <tr>
+                <td>
+                    <form action="/attic/editjunk/{{thisJunk.id}}" class="table" method="POST"><!--JUNK FORM-->
+                            {% csrf_token %}
+                        <h4>Update {{thisJunk.name}}</h4>
+                        <b>Name:</b> <input type="text" name="name" placeholder="Update your Junk"><br>
+                        <b>Location:</b> <input type="text" name="location" placeholder="Update where your junk is at."><br>
+                        <b>Price Per Day:</b> <input type="number" name="price" placeholder="Update charge."><br>
+                        <b>Description:</b> <br> <textarea name="description" id="" cols="30" rows="10" placeholder="Redescribe your junk."></textarea>
+                        <input type="submit" value="Update your Junk!">
+                    </form><!--JUNK FORM END-->
+                </td>
+            </tr>
+        </table><!--UPDATE TABLE END-->
+        <a href="/attic/deletejunk/{{thisJunk.id}}" style="color: red">Delete</a><br><!--DELETE-->
+        {% endif %}
         <a href="/attic">GO TO ATTIC</a>     <br>      
         <a href="/logout">Logout</a>     
     </div><!--CONTAINER-->

@@ -83,3 +83,13 @@ def addTribe(request):
     newTribe.junk.add(junk)
 
     return redirect('/attic')
+
+def editJunk(request, junkID):
+    print(f'this is the junk id {junkID}')
+    junk_update = Junk.objects.get(id = junkID)
+    junk_update.name = request.POST['name']
+    junk_update.location = request.POST['location']
+    junk_update.price = request.POST['price']
+    junk_update.description = request.POST['description']
+    junk_update.save()
+    return redirect(f'/attic/{junkID}')
