@@ -46,7 +46,7 @@
                 </tr>
             {% endfor %}
         </table><!--ALL REVIEWS FOR THIS JUNK-->
-
+        {% if thisJunk.poster.id != request.session.user_live %}
         <table class="table">
             <form action="/attic/review_junk/{{thisJunk.id}}" method="POST" ><!--REVIEW FORM FOR THIS JUNK-->
                 {% csrf_token %}
@@ -69,7 +69,7 @@
                 </tr>                
             </form><!--REVIEW FORM FOR THIS JUNK-->
         </table>
-
+        {% endif %}
         <a href="/attic">GO TO ATTIC</a>     <br>      
         <a href="/logout">Logout</a>     
     </div><!--CONTAINER-->
