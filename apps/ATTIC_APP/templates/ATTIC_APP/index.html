@@ -28,6 +28,7 @@
                 <th>Location</th>
                 <th>Description</th>
                 <th>Tribes</th>
+                <th>Per Day</th>
                 <th>Holder</th>
                 <th>Action</th>
             </thead>
@@ -38,8 +39,8 @@
                     <td>{{junk.poster.username}}</td><!--POSTER-->
                     <td>{{junk.location}}</td><!--LOCATION-->
                     <td>{{junk.description}}</td><!--DESCRIPTION-->                    
-                    <td>
-                        {% for tribe in junk.tribe.all %}{{tribe.name}}<br>{% endfor %}
+                    <td><!--TRIBES-->    
+                        {% for tribe in junk.tribe.all %}{{tribe.name}}<br>{% endfor %}<!--TRIBES WHEEL-->    
                         {% if sessionUser == junk.poster %}
                             <form action="/attic/addTribe" method="POST">
                                 {% csrf_token %}
@@ -51,10 +52,11 @@
                                     <option value="Sport">Sport</option>
                                     <option value="Melee">Melee</option>
                                 </select>
-                                <input type="submit" value="New Tribe">
+                                <input type="submit" value="New Tribe"><!--TRIBES WHEEL-->    
                             </form>
                         {% endif %}
-                    </td><!--FAMILY-->                    
+                    </td><!--TRIBES-->         
+                    <td>{{junk.price}}</td>           
                     <td>{{junk.holder.username}}</td><!--HOLDER-->
                     <td style="width: 150px;"><!--ACTIONS-->                        
                         <a href="/user{{junk.poster.id}}">View Poster</a> <br><!--VIEW POSTER-->                        
@@ -81,6 +83,8 @@
                                 {% csrf_token %}
                             <h2>Put Junk in Attic</h2>
                             <b>Name:</b> <input type="text" name="name" placeholder="Name your Junk"><br>
+                            <b>Location:</b> <input type="text" name="location" placeholder="Where is your junk?"><br>
+                            <b>Price Per Day:</b> <input type="number" name="price" placeholder="What will you charge?"><br>
                             <b>Description:</b> <br> <textarea name="description" id="" cols="30" rows="10" placeholder="Describe your Junk"></textarea>
                             <input type="submit" >
                         </form><!--JUNK FORM END-->
