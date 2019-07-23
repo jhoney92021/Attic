@@ -8,6 +8,11 @@ import random, datetime, bcrypt
 #ATTIC_APP_VIEWS
 #ATTIC_APP_VIEWS
 #ATTIC_APP_VIEWS
+#ATTIC_APP_VIEWS
+
+#ATTIC MAIN PAGE
+#ATTIC MAIN PAGE
+#ATTIC MAIN PAGE
 
 def index(request): #SECOND INDEX IE MAIN STORE PAGE
     try:
@@ -23,15 +28,24 @@ def index(request): #SECOND INDEX IE MAIN STORE PAGE
         messages.error(request, 'Must be logged in first/Failed at AtticPage')
         return redirect('/')
 
+#ATTIC MAIN PAGE
+#JUNK CRUD FUNCTIONS
+#JUNK CRUD FUNCTIONS
+#JUNK CRUD FUNCTIONS
+
 def addJunk(request): #PROCESS ROUTE FOR ADDING JUNK
 
     poster = request.session['user_live']
     poster = Users.objects.get(id=poster)
     junkName = request.POST['name']
+    junkLoc = request.POST['location']
+    junkPrice = request.POST['price']
     junkDesc = request.POST['description']
     if junkName != '':
         Junk.objects.create(
             name=junkName,
+            location=junkLoc,
+            price=junkPrice,
             description=junkDesc,
             poster=poster,
             holder=poster)    
@@ -44,38 +58,42 @@ def junkPage(request, junkID): #FOR RENDERING A USERS PAGE
 
     return render(request, "ATTIC_APP/junkPage.html", context)
 
-def reserveJunk(request, junkID):
-    holder = Users.objects.get(id = request.session['user_live'])
-    reservedjunk = Junk.objects.get(id = junkID)
-    holder.holding.add(reservedjunk)
-    return redirect(f'/user{holder.id}')
-
 def deleteJunk(request, junkID):
     yourJunk = Junk.objects.get(id = junkID)
     yourJunk.delete()
     return redirect('/attic')
 
+#END JUNK CRUD FUNCTIONS
+#END JUNK CRUD FUNCTIONS
+#BEGIN REVIEW FUNCTIONS
+#BEGIN REVIEW FUNCTIONS
+
 def reviewPoster(request, user_id):
-    thisUser = Users.objects.get(id = request.session['user_live'])
+    liveUser = Users.objects.get(id = request.session['user_live'])
     new_review = Review.objects.create(
         content = request.POST['review'],
         rating = request.POST['rate'],
-        creator = thisUser
+        creator = liveUser
     )
     subject = Users.objects.get(id = user_id)
     subject.reviewed.add(new_review)
     return redirect(f'/user{user_id}')
 
 def reviewJunk(request, junkID):
-    thisUser = Users.objects.get(id = request.session['user_live'])
+    liveUser = Users.objects.get(id = request.session['user_live'])
     new_review = Review.objects.create(
         content = request.POST['review'],
         rating = request.POST['rate'],
-        creator = thisUser
+        creator = liveUser
     )
     subject = Junk.objects.get(id = junkID)
     subject.reviewed.add(new_review)
     return redirect(f'/attic/{junkID}')
+
+#END REVIEW FUNCTIONS
+#END REVIEW FUNCTIONS
+#BEGIN CATEGORY STUFF
+#BEGIN CATEGORY STUFF
 
 def addTribe(request):
     newTribe = Tribe.objects.get(name=request.POST['addTribe']) 
@@ -83,3 +101,44 @@ def addTribe(request):
     newTribe.junk.add(junk)
 
     return redirect('/attic')
+
+#RESERVATION STUFF
+#RESERVATION STUFF
+
+def reserveJunk(request, junkID):
+    liveUser = Users.objects.get(id = request.session['user_live'])
+    thisJunk = Junk.objects.get(id=junkID)
+    thisJunk.reservation.add(liveUser)
+    thisJunk.save()
+
+    return redirect('/attic')
+
+def unreserveJunk(request, junkID):
+    liveUser = Users.objects.get(id = request.session['user_live'])
+    thisJunk = Junk.objects.get(id=junkID)
+    thisJunk.reservation.remove(liveUser)
+    
+    return redirect('/attic')
+
+#RESERVATION STUFF
+#RESERVATION STUFF
+#HOLD STUFF
+#HOLD STUFF
+
+def holdJunk(request, junkID):#USER IN POSESSION OF ACTUALY OBJECT IS HOLDER
+    liveUser = Users.objects.get(id = request.session['user_live'])
+    thisJunk = Junk.objects.get(id = junkID)
+    thisJunk.reservation.remove(liveUser)
+    thisJunk.holder = liveUser
+    thisJunk.save()
+    return redirect('/attic')
+
+def returnJunk(request, junkID):#RETURN OBJECT TO POSTER
+    thisJunk = Junk.objects.get(id = junkID)
+    poster = Users.objects.get(id = thisJunk.poster.id)
+    thisJunk.holder = poster
+    thisJunk.save()
+    return redirect('/attic')
+
+#HOLD STUFF
+#HOLD STUFF

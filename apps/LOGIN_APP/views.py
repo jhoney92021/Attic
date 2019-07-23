@@ -67,8 +67,9 @@ def logout(request): #CLEAR USER IN SESSION
 
 #END_SUCCESS_PAGE_ROUTES
 #END_SUCCESS_PAGE_ROUTES
-#BEGIN_USER_PAGE_ROUTES
-#BEGIN_USER_PAGE_ROUTES
+#BEGIN USER RELATED FUNCTIONS
+#BEGIN USER RELATED FUNCTIONS
+#BEGIN USER RELATED FUNCTIONS
 
 def userPage(request, userID): #FOR RENDERING A USERS PAGE
     context = {
@@ -77,6 +78,12 @@ def userPage(request, userID): #FOR RENDERING A USERS PAGE
     }
 
     return render(request, "LOGIN_APP/userPage.html", context)
+
+
+#COMPANY STUFF
+#COMPANY STUFF
+#COMPANY STUFF
+#COMPANY STUFF
 
 def companyPage(request, companyID): #FOR RENDERING A COMPANY PAGE
     try:
