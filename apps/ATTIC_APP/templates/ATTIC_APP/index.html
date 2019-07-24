@@ -8,7 +8,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'ATTIC_APP/css/style.css' %}"> 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClRwCIFqiGOeVYhEs3pxeFIXI3uSymttE&q&libraries=places"></script>
 </head>
 <body>
     <div class="container">
@@ -33,9 +33,10 @@
                 <th>Holder</th>
                 <th>Action</th>
             </thead>
+                
 
-            {% for junk in allJunk %}          
-                <tr class="readableTableData">
+            {% for junk in allJunk reversed %}    
+            <tr class="readableTableData">
                     <td>{{junk.name}}</td><!--NAME OF JUNK -->
                     <td>{{junk.poster.username}}</td><!--POSTER-->
                     <td>{{junk.location}}</td><!--LOCATION-->
@@ -102,10 +103,11 @@
                         </form><!--JUNK FORM END-->
                     </td>
                 </tr>
-            </table><!--CREATION TABLE END-->
-            
+            </table><!--CREATION TABLE END-->            
         </table><!--JOB TABLE END-->
-  
+        <div id="map"></div>    
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClRwCIFqiGOeVYhEs3pxeFIXI3uSymttE&q&libraries=places&callback=initMap" async defer></script>  
+         
     </div><!-- CONTAINER -->
 </body>
 </html>
