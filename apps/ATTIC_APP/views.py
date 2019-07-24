@@ -17,9 +17,14 @@ import random, datetime, bcrypt
 def index(request): #SECOND INDEX IE MAIN STORE PAGE
     try:
         sessionUser = request.session['user_live']
+        try:
+            allJunk = Junk.objects.all().order_by(request.session['sortJunk'])
+        except:
+            allJunk = Junk.objects.all()
+
         context = {
             'sessionUser': Users.objects.get(id=sessionUser),
-            'allJunk': Junk.objects.all(),
+            'allJunk': allJunk,
             'allTribes': Tribe.objects.all(),
         }
         return render(request,'ATTIC_APP/index.html', context)
@@ -38,7 +43,7 @@ def addJunk(request): #PROCESS ROUTE FOR ADDING JUNK
     poster = request.session['user_live']
     poster = Users.objects.get(id=poster)
     junkName = request.POST['name']
-    junkLoc = request.POST['location']
+    junkLoc = poster.location
     junkPrice = request.POST['price']
     junkDesc = request.POST['description']
     if junkName != '':
@@ -51,12 +56,26 @@ def addJunk(request): #PROCESS ROUTE FOR ADDING JUNK
             holder=poster)    
     return redirect('/attic')
 
+def sortBy(request):#SORT ROUTE
+    request.session['sortJunk'] = request.POST['sortJunk']
+    return redirect('/attic')
+
 def junkPage(request, junkID): #FOR RENDERING A USERS PAGE
     context = {
         'thisJunk': Junk.objects.get(id= junkID)
     }
 
     return render(request, "ATTIC_APP/junkPage.html", context)
+
+def editJunk(request, junkID):#FOR EDITING JUNK
+    print(f'this is the junk id {junkID}')
+    junk_update = Junk.objects.get(id = junkID)
+    junk_update.name = request.POST['name']
+    junk_update.location = request.POST['location']
+    junk_update.price = request.POST['price']
+    junk_update.description = request.POST['description']
+    junk_update.save()
+    return redirect(f'/attic/{junkID}')
 
 def deleteJunk(request, junkID):
     yourJunk = Junk.objects.get(id = junkID)
@@ -130,6 +149,7 @@ def holdJunk(request, junkID):#USER IN POSESSION OF ACTUALY OBJECT IS HOLDER
     thisJunk = Junk.objects.get(id = junkID)
     thisJunk.reservation.remove(liveUser)
     thisJunk.holder = liveUser
+    thisJunk.location = liveUser.location
     thisJunk.save()
     return redirect('/attic')
 
@@ -137,6 +157,7 @@ def returnJunk(request, junkID):#RETURN OBJECT TO POSTER
     thisJunk = Junk.objects.get(id = junkID)
     poster = Users.objects.get(id = thisJunk.poster.id)
     thisJunk.holder = poster
+    thisJunk.location = poster.location
     thisJunk.save()
     return redirect('/attic')
 

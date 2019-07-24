@@ -21,9 +21,26 @@
                     
                     <h5>Birthday:</h5> 
                     <span style="color: green; font-weight: 600">{{thisUser.birthday}}</span>                
+                    
+                    <h5>Location:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisUser.location}}</span>                
                 </td>          
             </thead>
         </table><!--GENERAL INFO-->
+        
+        <table class="table"><!--UPDATE LOCATION TABLE-->
+            <tr>
+                <td>
+                    <form action="/editaddress/{{thisUser.id}}" class="table" method="POST">
+                            {% csrf_token %}
+                        <h5>Update your location:</h5>
+                        <span style="color: black; font-weight: 600">Location:</span>
+                        <input type="text" name="location" placeholder="New Address">
+                        <input type="submit" value="Update your location!">
+                    </form><!--JUNK FORM END-->
+                </td>
+            </tr>
+        </table><!--UPDATE LOCATION TABLE END-->
 
         <table class="table"><!--JUNK POSTED-->
             <h5>Junk Posted:</h5>        
@@ -98,6 +115,9 @@
         </form>
         {% endif %}
 
+        <br>
+        
+        <iframe width="600" height="450" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?key=YOURKEYHERE={{thisUser.location}}" allowfullscreen></iframe>
         <br>
         <a href="/attic">Go To Attic</a>     <br>      
         <a href="/process/registrationform/company/{{thisUser.id}}">Register a Company</a><br>       
