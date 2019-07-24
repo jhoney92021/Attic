@@ -43,7 +43,7 @@ def addJunk(request): #PROCESS ROUTE FOR ADDING JUNK
     poster = request.session['user_live']
     poster = Users.objects.get(id=poster)
     junkName = request.POST['name']
-    junkLoc = request.POST['location']
+    junkLoc = poster.location
     junkPrice = request.POST['price']
     junkDesc = request.POST['description']
     if junkName != '':
@@ -149,6 +149,7 @@ def holdJunk(request, junkID):#USER IN POSESSION OF ACTUALY OBJECT IS HOLDER
     thisJunk = Junk.objects.get(id = junkID)
     thisJunk.reservation.remove(liveUser)
     thisJunk.holder = liveUser
+    thisJunk.location = liveUser.location
     thisJunk.save()
     return redirect('/attic')
 
@@ -156,6 +157,7 @@ def returnJunk(request, junkID):#RETURN OBJECT TO POSTER
     thisJunk = Junk.objects.get(id = junkID)
     poster = Users.objects.get(id = thisJunk.poster.id)
     thisJunk.holder = poster
+    thisJunk.location = poster.location
     thisJunk.save()
     return redirect('/attic')
 

@@ -8,23 +8,9 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'ATTIC_APP/css/style.css' %}"> 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClRwCIFqiGOeVYhEs3pxeFIXI3uSymttE&q&libraries=places"></script>
+
 </head>
 <body>
-    <form action="/attic/sortJunk" method="POST">
-        {% csrf_token %}
-        <select name="sortJunk">
-            <option value="updated_at">Posted: Oldest to Newest</option>
-            <option value="-updated_at">Posted: Newest to Oldest</option>
-            <option value="-updated_at">Posted: Newest to Oldest</option>
-            <option value="price">Price: lowest to highest</option>
-            <option value="-price">Price: Highest to Lowest</option>
-            <option value="name">Alphabetical</option>
-            <option value="-name">Reverse Alphabetical</option>
-        </select>
-        <input type="submit" value="Sort">     
-    </form>
-
     <div class="container">
         <div class="table">
             <thead>                
@@ -34,8 +20,23 @@
             </thead>
             <h1>Welcome, {{sessionUser.username}}!</h1>
         </div>
-        <table class="table"><!--JUNK TABLE-->
+        <div class="table">
             <h1>Junk in the Attic</h1>
+            <form action="/attic/sortJunk" method="POST">
+                {% csrf_token %}
+                <select name="sortJunk">
+                    <option value="updated_at">Posted: Oldest to Newest</option>
+                    <option value="-updated_at">Posted: Newest to Oldest</option>
+                    <option value="-updated_at">Posted: Newest to Oldest</option>
+                    <option value="price">Price: lowest to highest</option>
+                    <option value="-price">Price: Highest to Lowest</option>
+                    <option value="name">Alphabetical</option>
+                    <option value="-name">Reverse Alphabetical</option>
+                </select>
+                <input type="submit" value="Sort">     
+            </form>
+        </div>
+        <table class="table"><!--JUNK TABLE-->            
             <thead>
                 <th>Junk Type</th>
                 <th>Poster</th>
@@ -48,15 +49,15 @@
                 <th>Action</th>
             </thead>
            
-            {% for junk in allJunk %}          
+            {% for thisJunk in allJunk %}          
                 <tr class="readableTableData">
-                    <td>{{junk.name}}</td><!--NAME OF JUNK -->
-                    <td>{{junk.poster.username}}</td><!--POSTER-->
-                    <td>{{junk.location}}</td><!--LOCATION-->
-                    <td>{{junk.description}}</td><!--DESCRIPTION-->                    
+                    <td>{{thisJunk.name}}</td><!--NAME OF JUNK -->
+                    <td>{{thisJunk.poster.username}}</td><!--POSTER-->
+                    <td>{{thisJunk.location}}</td><!--LOCATION-->
+                    <td>{{thisJunk.description}}</td><!--DESCRIPTION-->                    
                     <td><!--TRIBES-->    
-                        {% for tribe in junk.tribe.all %}{{tribe.name}}<br>{% endfor %}<!--TRIBES WHEEL-->    
-                        {% if sessionUser == junk.poster %}
+                        {% for tribe in thisJunk.tribe.all %}{{tribe.name}}<br>{% endfor %}<!--TRIBES WHEEL-->    
+                        {% if sessionUser == thisJunk.poster %}
                             <form action="/attic/addTribe" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="thisJunk" value="{{junk.id}}">
@@ -71,30 +72,30 @@
                             </form>
                         {% endif %}
                     </td><!--TRIBES-->         
-                    <td>${{junk.price}}</td>
-                    <td>{% for user in junk.reservation.all %}{{user.username}}<br>{% endfor %}</td>      
-                    <td>{{junk.holder.username}}</td><!--HOLDER-->
+                    <td>${{thisJunk.price}}</td>
+                    <td>{% for user in thisJunk.reservation.all %}{{user.username}}<br>{% endfor %}</td>      
+                    <td>{{thisJunk.holder.username}}</td><!--HOLDER-->
                     <td style="width: 150px;"><!--ACTIONS-->                        
-                        <a href="/user{{junk.poster.id}}">View Poster</a> <br><!--VIEW POSTER-->                        
-                        <a href="/attic/{{junk.id}}">View Junk</a> <br><!--VIEW JUNK-->   
-                        {% if sessionUser != junk.holder %}     <!--SHOW IF NOT JUNK HOLDER-->   
-                            {% if sessionUser == junk.reservation.first %} <!--SHOW IF USER FIRST IN LINE-->   
-                                {% if junk.holder == junk.poster %}
-                                    <a href="/attic/hold/{{junk.id}}" style="color: yellow">Hold Junk</a><br> <!--HOLD BUTTON-->  
+                        <a href="/user{{thisJunk.poster.id}}">View Poster</a> <br><!--VIEW POSTER-->                        
+                        <a href="/attic/{{thisJunk.id}}">View Junk</a> <br><!--VIEW JUNK-->   
+                        {% if sessionUser != thisJunk.holder %}     <!--SHOW IF NOT JUNK HOLDER-->   
+                            {% if sessionUser == thisJunk.reservation.created_at.first %} <!--SHOW IF USER FIRST IN LINE-->   
+                                {% if thisJunk.holder == thisJunk.poster %}
+                                    <a href="/attic/hold/{{thisJunk.id}}" style="color: yellow">Hold Junk</a><br> <!--HOLD BUTTON-->  
                                 {% endif %}
                             {% endif %} <!-- END SHOW IF USER FIRST IN LINE-->   
                         {% endif %} <!--END SHOW IF NOT JUNK HOLDER-->  
-                        {% if sessionUser == junk.holder %}              
-                            <a href="/attic/return/{{junk.id}}" style="color: brown">Return Junk</a><br> <!--RETURN BUTTON-->      
+                        {% if sessionUser == thisJunk.holder %}              
+                            <a href="/attic/return/{{thisJunk.id}}" style="color: brown">Return Junk</a><br> <!--RETURN BUTTON-->      
                         {% endif %}          
-                        {% if sessionUser not in junk.reservation.all %}
-                            <a href="/attic/reserve/{{junk.id}}" style="color: green">Reserve Junk</a><br> <!--RESERVATION BUTTON-->
+                        {% if sessionUser not in thisJunk.reservation.all %}
+                            <a href="/attic/reserve/{{thisJunk.id}}" style="color: green">Reserve Junk</a><br> <!--RESERVATION BUTTON-->
                         {% endif %}
-                        {% if sessionUser in junk.reservation.all %}
-                            <a href="/attic/unreserve/{{junk.id}}" style="color: purple">UnReserve Junk</a><br> <!--UNRESERVARION BUTTON-->
+                        {% if sessionUser in thisJunk.reservation.all %}
+                            <a href="/attic/unreserve/{{thisJunk.id}}" style="color: purple">UnReserve Junk</a><br> <!--UNRESERVARION BUTTON-->
                         {% endif %}
-                        {% if sessionUser.id == junk.poster.id %}
-                        <a href="/attic/deletejunk/{{junk.id}}" style="color: red">Delete</a><br><!--DELETE-->
+                        {% if sessionUser.id == thisJunk.poster.id %}
+                        <a href="/attic/deletejunk/{{thisJunk.id}}" style="color: red">Delete</a><br><!--DELETE-->
                         {% endif %}
                     </td><!--ACTIONS-->
                 </tr>           
@@ -109,7 +110,6 @@
                                 {% csrf_token %}
                             <h2>Put Junk in Attic</h2>
                             <b>Name:</b> <input type="text" name="name" placeholder="Name your Junk"><br>
-                            <b>Location:</b> <input type="text" name="location" placeholder="Where is your junk?"><br>
                             <b>Price Per Day:</b> <input type="number" name="price" placeholder="What will you charge?"><br>
                             <b>Description:</b> <br> <textarea name="description" id="" cols="30" rows="10" placeholder="Describe your Junk"></textarea>
                             <input type="submit" >
@@ -118,8 +118,7 @@
                 </tr>
             </table><!--CREATION TABLE END-->            
         </table><!--JOB TABLE END-->
-        <div id="map"></div>    
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClRwCIFqiGOeVYhEs3pxeFIXI3uSymttE&q&libraries=places&callback=initMap" async defer></script>  
+
          
     </div><!-- CONTAINER -->
 </body>

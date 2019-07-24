@@ -33,8 +33,9 @@
                 <td>
                     <form action="/editaddress/{{thisUser.id}}" class="table" method="POST">
                             {% csrf_token %}
-                        <h4>Update your location</h4>
-                        <b>Location:</b> <input type="text" name="location" placeholder="New Address"><br>
+                        <h5>Update your location:</h5>
+                        <span style="color: black; font-weight: 600">Location:</span>
+                        <input type="text" name="location" placeholder="New Address">
                         <input type="submit" value="Update your location!">
                     </form><!--JUNK FORM END-->
                 </td>
@@ -116,7 +117,7 @@
 
         <br>
         
-        <iframe width="600" height="450" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?key=AIzaSyClRwCIFqiGOeVYhEs3pxeFIXI3uSymttE&q={{thisUser.location}}" allowfullscreen></iframe>
+        <iframe width="600" height="450" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?key=YOURKEYHERE={{thisUser.location}}" allowfullscreen></iframe>
         <br>
         <a href="/attic">Go To Attic</a>     <br>      
         <a href="/process/registrationform/company/{{thisUser.id}}">Register a Company</a><br>       
