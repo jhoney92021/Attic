@@ -75,7 +75,7 @@
         </table>
         {% endif %}
         {% if thisJunk.poster.id == request.session.user_live %}
-        <table class="table"><!--UPDATE TABLE-->
+        <table class="table"><!--UPDATE JUNK TABLE-->
             <tr>
                 <td>
                     <form action="/attic/editjunk/{{thisJunk.id}}" class="table" method="POST"><!--JUNK FORM-->
@@ -89,7 +89,7 @@
                     </form><!--JUNK FORM END-->
                 </td>
             </tr>
-        </table><!--UPDATE TABLE END-->
+        </table><!--UPDATE JUNK TABLE END-->
         <table class="table"><!--ADD IMAGE-->
             <tr>
                 <td>

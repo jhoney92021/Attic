@@ -12,9 +12,14 @@ import random, datetime, bcrypt
 def index(request): #SECOND INDEX IE MAIN STORE PAGE
     try:
         sessionUser = request.session['user_live']
+        try:
+            allJunk = Junk.objects.all().order_by(request.session['sortJunk'])
+        except:
+            allJunk = Junk.objects.all()
+
         context = {
             'sessionUser': Users.objects.get(id=sessionUser),
-            'allJunk': Junk.objects.all(),
+            'allJunk': allJunk,
             'allTribes': Tribe.objects.all(),
         }
         return render(request,'ATTIC_APP/index.html', context)
@@ -93,3 +98,7 @@ def editJunk(request, junkID):
     junk_update.description = request.POST['description']
     junk_update.save()
     return redirect(f'/attic/{junkID}')
+
+def sortBy(request):
+    request.session['sortJunk'] = request.POST['sortJunk']
+    return redirect('/attic')

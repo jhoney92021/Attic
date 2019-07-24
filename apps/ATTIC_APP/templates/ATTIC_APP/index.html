@@ -11,6 +11,20 @@
 
 </head>
 <body>
+    <form action="/attic/sortJunk" method="POST">
+        {% csrf_token %}
+        <select name="sortJunk">
+            <option value="updated_at">Posted: Oldest to Newest</option>
+            <option value="-updated_at">Posted: Newest to Oldest</option>
+            <option value="-updated_at">Posted: Newest to Oldest</option>
+            <option value="price">Price: lowest to highest</option>
+            <option value="-price">Price: Highest to Lowest</option>
+            <option value="name">Alphabetical</option>
+            <option value="-name">Reverse Alphabetical</option>
+        </select>
+        <input type="submit" value="Sort">     
+    </form>
+
     <div class="container">
         <div class="table">
             <thead>                
@@ -32,7 +46,7 @@
                 <th>Holder</th>
                 <th>Action</th>
             </thead>
-
+           
             {% for junk in allJunk %}          
                 <tr class="readableTableData">
                     <td>{{junk.name}}</td><!--NAME OF JUNK -->

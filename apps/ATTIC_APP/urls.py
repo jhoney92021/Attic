@@ -9,6 +9,7 @@ from apps.ATTIC_APP import views
 #ATTIC_APP_URLS
 #ATTIC_APP_URLS     
 urlpatterns = [
+    url(r'^sortJunk$', views.sortBy),
     url(r'^addTribe$', views.addTribe),#ADD TRIBE TO JUNK
     url(r'^review/(?P<user_id>\d+)$', views.reviewPoster),#REVIEW USER PROCESS ROUTE
     url(r'^reservejunk/(?P<junkID>\d+)$', views.reserveJunk),#RESERVE JUNK PROCESS
