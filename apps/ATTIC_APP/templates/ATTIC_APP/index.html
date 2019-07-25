@@ -5,107 +5,200 @@
     <meta name="viewport" content="width=3, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Attic, useful junk</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'ATTIC_APP/css/style.css' %}"> 
+    
+    <script src="https://kit.fontawesome.com/71100f8d22.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One|Atomic+Age|Fascinate|Metal+Mania|Permanent+Marker|Righteous|Ubuntu&display=swap" rel="stylesheet">
+{% load static %}
+    <link rel="stylesheet" href="{% static 'ATTIC_APP/css/style.css' %}"> 
 
 </head>
+
+
 <body>
-    <div class="container">
-        <div class="table">
-            <thead>                
-                <th><a href="/user{{sessionUser.id}}">Your Page</a></th>//
-                <th><a href="/logout">Logout</a></th>//
-                <th><a href="/">Login Page</a></th>
-            </thead>
-            <h1>Welcome, {{sessionUser.username}}!</h1>
-        </div>
-        <table class="table"><!--JUNK TABLE-->
-            <h1>Junk in the Attic</h1>
-            <thead>
-                <th>Junk Type</th>
-                <th>Poster</th>
-                <th>Location</th>
-                <th>Description</th>
-                <th>Tribes</th>
-                <th>Per Day</th>
-                <th>Reserved By</th>
-                <th>Holder</th>
-                <th>Action</th>
-            </thead>
 
-            {% for junk in allJunk %}          
-                <tr class="readableTableData">
-                    <td>{{junk.name}}</td><!--NAME OF JUNK -->
-                    <td>{{junk.poster.username}}</td><!--POSTER-->
-                    <td>{{junk.location}}</td><!--LOCATION-->
-                    <td>{{junk.description}}</td><!--DESCRIPTION-->                    
-                    <td><!--TRIBES-->    
-                        {% for tribe in junk.tribe.all %}{{tribe.name}}<br>{% endfor %}<!--TRIBES WHEEL-->    
-                        {% if sessionUser == junk.poster %}
-                            <form action="/attic/addTribe" method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="thisJunk" value="{{junk.id}}">
-                                <select name="addTribe">
-                                    <option value="Tools">Tools</option>
-                                    <option value="Auto">Auto</option>
-                                    <option value="Kitchen">Kitchen</option>
-                                    <option value="Sport">Sport</option>
-                                    <option value="Melee">Melee</option>
-                                </select>
-                                <input type="submit" value="New Tribe"><!--TRIBES WHEEL-->    
-                            </form>
-                        {% endif %}
-                    </td><!--TRIBES-->         
-                    <td>${{junk.price}}</td>
-                    <td>{% for user in junk.reservation.all %}{{user.username}}<br>{% endfor %}</td>      
-                    <td>{{junk.holder.username}}</td><!--HOLDER-->
-                    <td style="width: 150px;"><!--ACTIONS-->                        
-                        <a href="/user{{junk.poster.id}}">View Poster</a> <br><!--VIEW POSTER-->                        
-                        <a href="/attic/{{junk.id}}">View Junk</a> <br><!--VIEW JUNK-->   
-                        {% if sessionUser != junk.holder %}     <!--SHOW IF NOT JUNK HOLDER-->   
-                            {% if sessionUser == junk.reservation.first %} <!--SHOW IF USER FIRST IN LINE-->   
-                                {% if junk.holder == junk.poster %}
-                                    <a href="/attic/hold/{{junk.id}}" style="color: yellow">Hold Junk</a><br> <!--HOLD BUTTON-->  
+ 
+    
+
+
+
+
+<style> 
+.card:hover{
+    box-shadow: 40px 40px 40px -2px rgb(3, 68, 63);
+}
+.inner{
+    overflow: hidden;
+}
+.inner img{
+    transition: all 1.5s ease;
+}
+
+.inner:hover img{
+    transform: scale(1.5);
+}
+</style>
+
+<div class="container-fluid">
+        <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark rounded">
+                <a class="navbar-brand" href="#">Attic</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="/user/{{sessionUser.id}}">{{sessionUser.username}}'s Page <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#addjunk">Add item</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       Catagories
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Tools</a>
+                        <a class="dropdown-item" href="#">Sporting</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                      </div>
+                    </li>
+                    <!-- <li class="nav-item">
+                      <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li> -->
+                  </ul>
+                  <ul class="navbar-nav mr-auto ">
+                      <li class="nav-item active text-white  "><h1 style="font-family: 'Righteous', cursive;">JUNK IN THE ATTIC</h1></li>
+                  </ul>
+                  <form class="form-inline my-2 my-lg-0">
+                    <input class=" fas fa-search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                  </form>
+                  <form class="form-inline my-2 my-lg-0 ">
+                        
+                        <button class="btn btn-outline-success my-2 my-sm-0 "type="button"><a class="text-success"href="/"> Login</a></button>
+                      </form>
+                      <form class="form-inline  nav-item">
+                            
+                            <button class="btn btn-outline-success my-2 my-sm-0 "type="button"><a class="text-success "href="/logout"> Logout</a></button>
+                          </form>
+                </div>
+              </nav>
+
+        <div class="row shadow-lg p-3 mb-5 bg-light rounded">
+
+                {% for junk in allJunk %}
+                <div class="modal fade" id="myOutput{{junk.id}}" tabindex="-1" role="dialog" aria-labelledby="#exampleModalScrollableTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalScrollableTitle">Rental Notice</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                        
+                            <div class="modal-body">
+                            Attic is not responsible for any lost, broken or stolen items of the poster. By clicking on the reservation button below you are agreeing to the right of the poster to file any complaint or take legal 
+                            action if you the "requestor" fail to return or damage rented property or service from the poster.
+                            </div>
+                            
+                            <div class="modal-footer">
+                                    
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                            
+                                <!--SHOW IF NOT JUNK HOLDER-->   
+                                        <!--SHOW IF USER FIRST IN LINE-->   
+                            {% if sessionUser not in junk.reservation.all %}
+                                <a type="button" class="btn btn-primary rounded"href="/attic/reserve/{{junk.id}}"data-whatever="{{junk.id}}">Reserve Junk{{junk.name}}</a>                
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+                <div class="col-md-3 ">
+                        <div class="card mb-3  ">
+                           <div class="inner">
+                                <img class="img-fluid " alt="smaple image" src="https://media.istockphoto.com/photos/empty-and-haunted-attic-picture-id886732022?k=6&m=886732022&s=612x612&w=0&h=oGJeSywZTI-Whnphe7dAW2wswsMjDUljqwRWlOrd7bY=" class="card-img-top" alt="...">
+                            </div>
+                                <div class="card-body">
+                            <h4 class="card-text">{{junk.name}}</h4>
+                            <p class="card-text">Poster: {{junk.poster.username}}</p>
+                            <p class="card-text">Location: {{junk.location}}</p>
+                            <p class="card-text"><i class="fas fa-dollar-sign"></i> <strong>{{junk.price}}</strong></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group">
+                                    {% if sessionUser != junk.holder %}     <!--SHOW IF NOT JUNK HOLDER-->   
+                                    {% if sessionUser == junk.reservation.first %} <!--SHOW IF USER FIRST IN LINE-->   
+                                        {% if junk.holder == junk.poster %}
+                                            <a class="btn btn-sm btn-outline-secondary" href="/attic/hold/{{junk.id}}" style="color: yellow">Hold Junk</a><br> <!--HOLD BUTTON-->  
+                                        {% endif %}
+                                    {% endif %} <!-- END SHOW IF USER FIRST IN LINE-->   
+                                {% endif %} <!--END SHOW IF NOT JUNK HOLDER-->  
+                                {% if sessionUser == junk.holder %}              
+                                    <a class="btn btn-sm btn-outline-secondary" href="/attic/return/{{junk.id}}" style="color: brown">Return Junk</a><br> <!--RETURN BUTTON-->      
+                                {% endif %}          
+                                {% if sessionUser not in junk.reservation.all %}
+                                    <a class="btn btn-sm btn-outline-secondary"
+
+                                    data-toggle="modal" data-target="#myOutput{{junk.id}}"  
+
+                                    style="color: green">Reserve Junk</a><br> <!--RESERVATION BUTTON-->
                                 {% endif %}
-                            {% endif %} <!-- END SHOW IF USER FIRST IN LINE-->   
-                        {% endif %} <!--END SHOW IF NOT JUNK HOLDER-->  
-                        {% if sessionUser == junk.holder %}              
-                            <a href="/attic/return/{{junk.id}}" style="color: brown">Return Junk</a><br> <!--RETURN BUTTON-->      
-                        {% endif %}          
-                        {% if sessionUser not in junk.reservation.all %}
-                            <a href="/attic/reserve/{{junk.id}}" style="color: green">Reserve Junk</a><br> <!--RESERVATION BUTTON-->
-                        {% endif %}
-                        {% if sessionUser in junk.reservation.all %}
-                            <a href="/attic/unreserve/{{junk.id}}" style="color: purple">UnReserve Junk</a><br> <!--UNRESERVARION BUTTON-->
-                        {% endif %}
-                        {% if sessionUser.id == junk.poster.id %}
-                            <a href="/attic/deletejunk/{{junk.id}}" style="color: red">Delete</a><br><!--DELETE-->
-                        {% endif %}
-                    </td><!--ACTIONS-->
-                </tr>           
-            {% endfor %}
-            
-        </table><!--JUNK TABLE END-->
+                                {% if sessionUser in junk.reservation.all %}
+                                    <a class="btn btn-sm btn-outline-secondary" href="/attic/unreserve/{{junk.id}}" style="color: purple">UnReserve Junk</a><br> <!--UNRESERVARION BUTTON-->
+                                {% endif %}
+                                {% if sessionUser.id == junk.poster.id %}
+                                    <a class="btn btn-sm btn-outline-secondary" href="/attic/deletejunk/{{junk.id}}" style="color: red">Delete</a><br><!--DELETE-->
+                                {% endif %}
+                                    <a class="btn btn-sm btn-outline-secondary" href="/user/{{junk.poster.id}}">View Poster</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/attic/{{junk.id}}">View Junk</a>
+                                <!-- <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
+                              </div>
+                              <small class="text-muted"><i class="far fa-money-bill-alt"></i> {{junk.price}}</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
-            <table class="table"><!--CREATION TABLE-->
-                <tr>
-                    <td>
-                        <form action="/attic/addJunk" class="table" method="POST"><!--JUNK FORM-->
-                                {% csrf_token %}
-                            <h2>Put Junk in Attic</h2>
-                            <b>Name:</b> <input type="text" name="name" placeholder="Name your Junk"><br>
-                            <b>Location:</b> <input type="text" name="location" placeholder="Where is your junk?"><br>
-                            <b>Price Per Day:</b> <input type="number" name="price" placeholder="What will you charge?"><br>
-                            <b>Description:</b> <br> <textarea name="description" id="" cols="30" rows="10" placeholder="Describe your Junk"></textarea>
-                            <input type="submit" >
-                        </form><!--JUNK FORM END-->
-                    </td>
-                </tr>
-            </table><!--CREATION TABLE END-->
-            
-        </table><!--JOB TABLE END-->
+                      {% endfor %}
+        </div>
+
+        <table id="addjunk" class="table table-dark"><!--CREATION TABLE-->
+            <tr>
+                <td>
+                    <form action="/attic/addJunk" class="table" method="POST"><!--JUNK FORM-->
+                        <div class="form-group">
+                            {% csrf_token %}
+                        <h2>Put Junk in Attic</h2>
+                        <b>Name:</b> <input class="form-control form-control-lg" type="text" name="name" placeholder="Name your Junk"><br>
+                        <b>Location:</b> <input class="form-control form-control-lg" type="text" name="location" placeholder="Where is your junk?"><br>
+                        <b>Price Per Day:</b> <input class="form-control form-control-lg" type="number" name="price" placeholder="What will you charge?"><br>
+                        <b>Description:</b> <br> <textarea class="form-control form-control-lg" name="description" id="" cols="30" rows="10" placeholder="Describe your Junk"></textarea>
+                        <br>
+                        <input class="btn btn-secondary btn-lg btn-block" type="submit" value="Submit">
+                    </div>
+                    </form><!--JUNK FORM END-->
+                </td>
+            </tr>
+        </table><!--CREATION TABLE END-->
+        
+        
+        {% for junk in allJunk %}
   
-    </div><!-- CONTAINER -->
-</body>
-</html>
+    {% endfor %}
+
+      </div>
+    
+    </body>
+    </html>

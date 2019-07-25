@@ -52,8 +52,11 @@ def addJunk(request): #PROCESS ROUTE FOR ADDING JUNK
     return redirect('/attic')
 
 def junkPage(request, junkID): #FOR RENDERING A USERS PAGE
+    sessionUser = request.session['user_live']
+    
     context = {
-        'thisJunk': Junk.objects.get(id= junkID)
+        'thisJunk': Junk.objects.get(id= junkID),
+        'sessionUser': Users.objects.get(id=sessionUser),
     }
 
     return render(request, "ATTIC_APP/junkPage.html", context)
@@ -77,7 +80,7 @@ def reviewPoster(request, user_id):
     )
     subject = Users.objects.get(id = user_id)
     subject.reviewed.add(new_review)
-    return redirect(f'/user{user_id}')
+    return redirect(f'/user/{user_id}')
 
 def reviewJunk(request, junkID):
     liveUser = Users.objects.get(id = request.session['user_live'])

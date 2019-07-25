@@ -72,8 +72,10 @@ def logout(request): #CLEAR USER IN SESSION
 #BEGIN USER RELATED FUNCTIONS
 
 def userPage(request, userID): #FOR RENDERING A USERS PAGE
+    sessionUser = request.session['user_live']
     context = {
-        'thisUser': Users.objects.get(id= userID)
+        'thisUser': Users.objects.get(id= userID),
+        'sessionUser': Users.objects.get(id=sessionUser),
 
     }
 
