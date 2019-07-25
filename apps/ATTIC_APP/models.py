@@ -10,9 +10,12 @@ from apps.LOGIN_APP.models import Users
 #BEGIN ALL TABLE MODELS
 #BEGIN JUNK TABLE MODELS
 #BEGIN JUNK TABLE MODELS
+
 class Junk(models.Model):#ALSO REFFERED TO AS JUNK
     name = models.CharField(max_length=20)#NAME OF JUNK
     description = models.TextField()#DESCRIPTION OF JUNK
+    image = models.ImageField(upload_to='/images', default = 'default.jpg')
+    imageURL = models.CharField(max_length = 255, default = 'default.jpg')
     location = models.CharField(max_length=20, default='None added yet')#LOCATION OF JUNK    
     price = models.IntegerField(default=5)#PRICE OF JUNK
     poster = models.ForeignKey(Users, related_name='posted')#PERSON WHO OWNS JUNK

@@ -62,7 +62,8 @@ def sortBy(request):#SORT ROUTE
 
 def junkPage(request, junkID): #FOR RENDERING A USERS PAGE
     context = {
-        'thisJunk': Junk.objects.get(id= junkID)
+        'thisJunk': Junk.objects.get(id= junkID),
+        'user_review': Review.objects.get(id = request.session['user_live'])
     }
 
     return render(request, "ATTIC_APP/junkPage.html", context)
@@ -74,6 +75,7 @@ def editJunk(request, junkID):#FOR EDITING JUNK
     junk_update.location = request.POST['location']
     junk_update.price = request.POST['price']
     junk_update.description = request.POST['description']
+    junk_update.image = reqrequest.POST['img']
     junk_update.save()
     return redirect(f'/attic/{junkID}')
 

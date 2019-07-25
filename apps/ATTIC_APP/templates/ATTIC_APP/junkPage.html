@@ -11,7 +11,7 @@
 
 </head>
 <body>
-    Average rating: {{thisJunk.avgRating}}
+    Average rating: {{thisJunk.avgRating|floatformat:1}}
     <div class="container">
         <table class="table"><!--GENERAL INFO-->
             <thead>
@@ -19,7 +19,10 @@
                     <h5>Name:</h5> 
                     <span style="color: green; font-weight: 600">{{thisJunk.name}}</span>           
                     <h5>Description:</h5> 
-                    <span style="color: green; font-weight: 600">{{thisJunk.description}}</span>           
+                    <span style="color: green; font-weight: 600">{{thisJunk.description}}</span><br>           
+                    
+                    <img style="width: 200px; height: 200px;" src="{% static 'ATTIC_APP/images/default.jpg' %}">
+                    
                     <h5>Tribe:</h5> 
                     {% for tribe in thisJunk.tribe.all %}
                     <span style="color: green; font-weight: 600">{{tribe.name}}</span><br>      
@@ -92,9 +95,10 @@
         <table class="table"><!--ADD IMAGE-->
             <tr>
                 <td>
-                    <form action="/attic/editjunk/{{thisJunk.id}}" class="table" method="POST"><!--JUNK FORM-->
+                    <form action="/attic/editjunk/{{thisJunk.id}}" name="img" class="table" method="POST"><!--JUNK FORM-->
                             {% csrf_token %}
-                        
+                            
+                        <input accept="file_extension|audio/*|video/*|image/*|media_type">
                         <input type="submit" value="Upload an image of your junk.">
                     </form><!--JUNK FORM END-->
                 </td>
