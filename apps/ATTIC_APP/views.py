@@ -14,6 +14,7 @@ import random, datetime, bcrypt
 #ATTIC MAIN PAGE
 #ATTIC MAIN PAGE
 
+
 def index(request): #SECOND INDEX IE MAIN STORE PAGE
     try:
         sessionUser = request.session['user_live']
@@ -24,6 +25,7 @@ def index(request): #SECOND INDEX IE MAIN STORE PAGE
 
         context = {
             'sessionUser': Users.objects.get(id=sessionUser),
+            'allUsers': Users.objects.all(),
             'allJunk': allJunk,
             'allTribes': Tribe.objects.all(),
         }
@@ -163,3 +165,12 @@ def returnJunk(request, junkID):#RETURN OBJECT TO POSTER
 
 #HOLD STUFF
 #HOLD STUFF
+
+def reservationQuery(request, junkID):#ROUTE FOR AJAX TO QUERY FOR FIRST PERSON IN LINE
+    sessionUser = request.session['user_live']
+    thisJunk = Junk.objects.get(id=junkID)
+    print('*'*50, '\n', thisJunk.reservation.first, '\n','*'*50)
+    if sessionUser is thisJunk.reservation.first():
+        return '<a href="/attic/hold/{{thisJunk.id}}" style="color: yellow">Hold Junk</a><br>'
+    else:
+        return

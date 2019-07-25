@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^deletejunk/(?P<junkID>\d+)$', views.deleteJunk),#DELETE JUNK PROCESS
     url(r'^review_junk/(?P<junkID>\d+)$', views.reviewJunk),#REVIEW JUNK PROCESS ROUTE
     url(r'^return/(?P<junkID>\d+)$', views.returnJunk),#RETURN HELD JUNK PROCESS
+    url(r'^reservationQuery/(?P<junkID>\d+)$', views.reservationQuery, name='reservationQuery'),#QUERY FOR AJAX TO USE
     url(r'^hold/(?P<junkID>\d+)$', views.holdJunk),#HOLD JUNK PROCESS
     url(r'^addTribe$', views.addTribe),#ADD TRIBE TO JUNK
     url(r'^sortJunk$', views.sortBy),#SORT JUNK ROUTE
