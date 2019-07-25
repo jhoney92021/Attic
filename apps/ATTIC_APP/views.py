@@ -99,6 +99,7 @@ def reviewPoster(request, user_id):
     return redirect(f'/user{user_id}')
 
 def reviewJunk(request, junkID):
+    rateTotal = 0
     liveUser = Users.objects.get(id = request.session['user_live'])
     new_review = Review.objects.create(
         content = request.POST['review'],
@@ -107,6 +108,15 @@ def reviewJunk(request, junkID):
     )
     subject = Junk.objects.get(id = junkID)
     subject.reviewed.add(new_review)
+    for review in subject.reviewed.all():
+        rateTotal += review.rating
+    rateAverage = rateTotal/subject.reviewed.all().count()
+    subject.avgRating = rateAverage
+    subject.save()
+    print('*'*100)
+    print(rateTotal)
+    print(rateAverage)
+    
     return redirect(f'/attic/{junkID}')
 
 #END REVIEW FUNCTIONS
