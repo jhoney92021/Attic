@@ -88,9 +88,9 @@ class Users(models.Model):
     location = models.CharField(max_length=20, default='None added yet')#LOCATION OF USER
     username = models.CharField(max_length=20, default='not a required field')
     birthday = models.DateField(default= datetime.date.today)
-    address = models.CharField(max_length=100)
     email = models.CharField(max_length=80, default='Seriously, no email? it is 2019 get with it man')
     password = models.CharField(max_length=8)
+    avgRating = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = Manager()

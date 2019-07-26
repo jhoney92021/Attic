@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^addTribe$', views.addTribe),#ADD TRIBE TO JUNK
     url(r'^(?P<junkID>\d+)$', views.junkPage),#JUNK PAGE
     url(r'^addJunk$', views.addJunk),#ADD NEW JUNK
+     url(r'^sortJunk$', views.sortBy),
     url(r'^$', views.index),
 ]
 #ATTIC_APP_URLS

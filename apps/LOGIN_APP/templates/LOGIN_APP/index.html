@@ -1,132 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Login and Registration</title>
-        {% load static %}
-        <link rel="stylesheet" href="{% static 'LOGIN_APP/css/style.css' %}"> 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/71100f8d22.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One|Atomic+Age|Fascinate|Metal+Mania|Permanent+Marker|Righteous|Ubuntu&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+    <style>
+    .login-button-container {
+  margin: 32px -15px;
+}
+
+.sign-in {
+ padding-left: 0;
+}
+
+.register {
+ padding-right: 0;
+}
+
+.sign-in__button,
+.register__button {
+  background-color: white;
+  border: 1px solid black;
+  display: block;
+  min-height: 60px;
+  width: 100%;
+
+  &:hover {
+    background: none;
+    border: 1px solid #ccc;
+    color: green;
+  }
+
+  &:focus,
+  &.focus {
+    outline: 3px solid orange !important;
+  }
+
+  &:active,
+  &.active {
+    background-color: #ccc;
+    border: 1px solid pink;
+    box-shadow: none;
+  }
+}
+
+.hidden_clip {
+  clip: rect(1px 1px 1px 1px); // IE6, IE7
+  clip: rect(1px, 1px, 1px, 1px);
+  position: absolute;
+}
+
+.text-input__field {
+  border: 0;
+  display: block;
+  font-size: 16px;
+  height: 60px;
+  outline: 1px solid #ccc;
+  padding: 18px;
+  width: 100%;
+
+  &:focus,
+  &.focus {
+    outline: 3px solid orange;
+  }
+
+  &:active,
+  &.active {
+    outline: 1px solid black;
+  }
+}
+
+    </style>
+    <div class="container">
+
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+          <div class="login-button-container clearfix">
+      
+            <div class="col-xs-6 sign-in">
+              <button class="btn sign-in__button active">
+                Sign in        
+              </button>
+            </div>
+      
+            <div class="col-xs-6 register">
+              <button class="btn register__button">
+                Register        
+              </button>
+            </div>
+      
+          </div>
+        </div>
+      
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+      
+          <div class="row login__form" style="display: block;">
+            <form action="/process/login" method="post" accept-charset="UTF-8">
+                {% csrf_token %}
+              <div>
+                <fieldset class="form__fieldset required form__login">
+                  <legend class="form__legend--subtitle">
+                    Sign in using email </legend>
+      
+                  <div class="form__field__wrapper form-item"> <label for="edit-email" class="text-input__label">Email address <span class="form-required" aria-hidden="true" title="This field is required.">*</span><span class="hidden_clip">a required field.</span></label>
+                    <input class="form-control form-text required text-input__field" type="text" id="edit-email" name="email" value="" size="60" maxlength="128" aria-required="true" aria-describedby="edit-email-descriptor">
+                  </div>
+                  <div class="form__field__wrapper form-item"> <label for="edit-password" class="text-input__label">Password <span class="form-required" aria-hidden="true" title="This field is required.">*</span><span class="hidden_clip">a required field.</span></label>
+                    <input class="form-control form-text password__field text-input__field required" type="password" id="login" name="password" size="60" maxlength="128" aria-required="true">
+                    <script>
+                            function loginPassword() {
+                                var x = document.getElementById("login");
+                                    if (x.type === "password") {
+                                        x.type = "text";
+                                    }
+                                    else {x.type = "password";}
+                            }
+                        </script>
+                </div>
+                </fieldset>
+                <button class="inpt-btn btn btn-primary form-submit js-registerSubmit" type="submit" id="edit-submit" value="Register">Sig in</button>
+              </div>
+            </form>
+          </div>
+      
+          <div class="row register__form" style="display: none;">
+            <div id="registration-form-wrapper">
+              <form action="/process/registration" method="post" accept-charset="UTF-8">
+                {% csrf_token %}
+                <div>
+                  <div class="form__register">
+      
+      
+                    <div class="clearfix"></div>
+      
+                    <div class="divide-width">
+                      <div class="middle-bottom-inner-left">
+                        <div class="form__field__wrapper form-item"> <label for="edit-firstname" class="text-input__label">First Name <span class="form-required" aria-hidden="true" title="This field is required.">*</span><span class="hidden_clip">a required field.</span></label>
+                          <input placeholder="First name" class="form-control form-text required text-input__field" type="text" id="edit-firstname" name="fname" value="" size="60" maxlength="128" aria-required="true" aria-describedby="edit-firstname-descriptor">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="divide-width divide-mrgn">
+                      <div class="middle-bottom-inner-left">
+                        <div class="form__field__wrapper form-item"> <label for="edit-lastname" class="input__label">Last Name <span class="form-required" aria-hidden="true" title="This field is required.">*</span><span class="hidden_clip">a required field.</span></label>
+                          <input placeholder="Last name" class="form-control form-text required text-input__field" type="text" id="edit-lastname" name="lname" value="" size="60" maxlength="128" aria-required="true" aria-describedby="edit-lastname-descriptor">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="divide-width divide-mrgn">
+                            <div class="middle-bottom-inner-left">
+                              <div class="form__field__wrapper form-item"> <label for="edit-lastname" class="input__label">Username <span class="form-required" aria-hidden="true" title="This field is required.">*</span><span class="hidden_clip">a required field.</span></label>
+                                <input placeholder="Username" class="form-control form-text required text-input__field" type="text" id="edit-lastname" name="username" value="" size="60" maxlength="128" aria-required="true" aria-describedby="edit-lastname-descriptor">
+                              </div>
+                            </div>
+                          </div>
 
 
-    </head>
+                          <div class="divide-width divide-mrgn">
+                                <div class="middle-bottom-inner-left">
+                                  <div class="form__field__wrapper form-item"> <label for="edit-lastname" class="input__label">Username <span class="form-required" aria-hidden="true" title="This field is required.">*</span><span class="hidden_clip">a required field.</span></label>
+                                    <input placeholder="Birthdate" class="form-control form-text required text-input__field" type="date" id="datepicker" name="birthday" value="" size="60" maxlength="128" aria-required="true" aria-describedby="edit-lastname-descriptor">
+                                  </div>
+                                </div>
+                              </div>
 
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="registration">
-                    <form action="/process/registration" method="POST" >
-                        {% csrf_token %}
-                        <table class="table">
-                            <thead>Registration</thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        First Name: <input type="text" name="fname">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Last Name: <input type="text" name="lname">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Username: <input type="text" name="username">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Birthday: <input type="date" name="birthday">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Email: <input type="text" name="email">
-                                    </td>
-                                </tr>
-                                <tr>
-                                <td id="passwordInstruction">Password must be exactly 8 characters, with at least 1 Number, 1 Capital Letter, and 1 of these($,@,!,?)</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Password: <input type="password" name="password" id="intitialPassword"> 
-                                        <input type="checkbox" onclick="initialPassword()">Show Password
-                                        <script>
-                                            function initialPassword() {
-                                                var x = document.getElementById("intitialPassword");
-                                                    if (x.type === "password") {
-                                                        x.type = "text";
-                                                    }
-                                                    else {x.type = "password";}
-                                            }
-                                        </script> 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Password Confirmation: <input type="password" name="confirmation" id="confirmation">
-                                        <input type="checkbox" onclick="passwordConfirmation()">Show Password
-                                        <script>
-                                            function passwordConfirmation() {
-                                                var x = document.getElementById("confirmation");
-                                                    if (x.type === "password") {
-                                                        x.type = "text";
-                                                    }
-                                                    else {x.type = "password";}
-                                            }
-                                        </script> 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input type="submit" name="Register" value="Register">
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </form>
+                              
+                    <div class="middle-bottom-inner-left">
+                      <div class="form__field__wrapper form-item"> <label for="edit-email--2" class="input__label">Email Address <span class="form-required" aria-hidden="true" title="This field is required.">*</span><span class="hidden_clip">a required field.</span></label>
+                        <input placeholder="Enter your email address" class="form-control form-text required text-input__field" type="text" id="edit-email--2" name="email" value="" size="60" maxlength="128" aria-required="true" aria-describedby="edit-email--2-descriptor">
+                      </div>
+                    </div>
+      
+                    <div class="middle-bottom-inner-left-pass">
+                      <div class="form-type-password form-item-password form-item form-group" id="display-second-part">
+                        <div class="form__field__wrapper form-item"> <label for="edit-password--2" class="text-input__label">Password </label>
+                          <input class="form-group form-control form-text password__field text-input__field" placeholder="Create a password" data-edit-password="true" type="password" id="intitialPassword" name="password" size="60" maxlength="128"> <span class="field-suffix"><span id="passwordval"></span></span>
+                          <script>
+                                function initialPassword() {
+                                    var x = document.getElementById("intitialPassword");
+                                        if (x.type === "password") {
+                                            x.type = "text";
+                                        }
+                                        else {x.type = "password";}
+                                }
+                            </script>
+                             <label for="edit-password--2" class="text-input__label">Confirm Password </label>
+                          <input class="form-group form-control form-text password__field text-input__field" placeholder="Confirm password" type="password" name="confirmation" id="confirmation">
+                          <script>
+                                function passwordConfirmation() {
+                                    var x = document.getElementById("confirmation");
+                                        if (x.type === "password") {
+                                            x.type = "text";
+                                        }
+                                        else {x.type = "password";}
+                                }
+                            </script>
+                        </div>
+      
+                      </div>
+                    </div>
+      
+                  </div>
+                  <button class="inpt-btn btn btn-primary form-submit js-registerSubmit" type="submit" id="edit-submit--2" name="Register" value="Register">Register</button>
+                </div>
+              </form>
+            </div>
+          </div>
+      
+        </div>
+      
+      </div>
 
-                </div> <!--REGISTRATION--> 
-
-                <div class="login">
-                    <form action="/process/login" method="POST">
-                        {% csrf_token %}
-                        <table class="table">
-                            <thead>Login</thead>
-
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        Email: <input type="text" name="email">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Password: <input type="password" name="password" id="login">   
-                                        <input type="checkbox" onclick="loginPassword()">Show Password
-                                        <script>
-                                            function loginPassword() {
-                                                var x = document.getElementById("login");
-                                                    if (x.type === "password") {
-                                                        x.type = "text";
-                                                    }
-                                                    else {x.type = "password";}
-                                            }
-                                        </script> 
-                                    </td>
-                                </tr>
-                                <tr>
-                                        <td>
-                                            <input type="submit" name="Login" value="Log In">
-                                        </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </form>    
-                        {% if messages %}
+      {% if messages %}
                         <table class="table">
                             <tr class="errors">                                
                                 <td>
@@ -136,12 +231,39 @@
                                 </td>                                
                             </tr>
                         </table>
-                         {% endif %}           
-                    <a href="/attic">GO TO ATTIC</a> <br>      
-                    <a href="/user{{thisUser.id}}">GO TO YOUR PAGE</a> <br>   
-                    <a href="/logout">Logout</a>     
-                </div> <!--LOGIN--> 
-            </div> <!--ROWS-->  
-        </div> <!--CONTAINER-->   
-    </body>
+                         {% endif %}
+      <script>
+
+$(function() {
+    $("#datepicker").datepicker({
+    dateFormat: "yy-mm-dd"
+            });
+    $("#datepicker1").datepicker({
+    dateFormat: "yy-mm-dd"
+            });
+          });
+
+       $('.register__form').hide();
+
+$('.sign-in__button').click(function(e) {
+  e.preventDefault();
+  $(this).addClass('active');
+  $('.register__button').removeClass('active');
+  $('.login__form').show();
+  $('.register__form').hide();
+  $('#edit-email').focus(); //Should appear after $('.login__form').show(); because if it's before that, the register form doesn't exist in the DOM
+});
+
+$('.register__button').click(function(e) {
+  e.preventDefault();
+  $(this).addClass('active');
+  $('.sign-in__button').removeClass('active');
+  $('.register__form').show();
+  $('.login__form').hide();
+  $('#edit-firstname').focus(); //Should appear after $('.register__form').show(); because if it's before that, the register form doesn't exist in the DOM
+});
+
+
+      </script>
+</body>
 </html>
