@@ -144,7 +144,38 @@
                                 <img class="img-fluid " alt="smaple image" src="https://media.istockphoto.com/photos/empty-and-haunted-attic-picture-id886732022?k=6&m=886732022&s=612x612&w=0&h=oGJeSywZTI-Whnphe7dAW2wswsMjDUljqwRWlOrd7bY=" class="card-img-top" alt="...">
                             </div>
                                 <div class="card-body">
-                            <h4 class="card-text">{{junk.name}}</h4>
+                            <h4 class="card-text row">{{junk.name}}</h4>
+                            
+                            {% for tribe in junk.tribe.all %}{{tribe.name}}<br>{% endfor %}<!--TRIBES WHEEL-->    
+
+                        {% if sessionUser == junk.poster %}
+                        <div>
+                            <form class="row" action="/attic/addTribe" method="POST">
+
+                                {% csrf_token %}
+
+                                <input type="hidden" name="thisJunk" value="{{thisJunk.id}}">
+
+                                <select name="addTribe">
+
+                                    <option value="Tools">Tools</option>
+
+                                    <option value="Auto">Auto</option>
+
+                                    <option value="Kitchen">Kitchen</option>
+
+                                    <option value="Sport">Sport</option>
+
+                                    <option value="Melee">Melee</option>
+
+                                </select>
+
+                                <input class="btn btn-primary" type="submit" value="New Tribe"><!--TRIBES WHEEL-->    
+
+                            </form>
+                        </div>
+
+                        {% endif %}
                             <p class="card-text">Poster: {{junk.poster.username}}</p>
                             <p> Poster Rating: {{junk.poster.avgRating | floatformat:1 }}</p>
                             <p> Rating: {{junk.avgRating | floatformat:1 }}</p>
@@ -191,7 +222,9 @@
 
         <table id="addjunk" class="table table-dark"><!--CREATION TABLE-->
             <tr>
+                
                 <td>
+                        
                     <form action="/attic/addJunk" class="table" method="POST"><!--JUNK FORM-->
                         <div class="form-group">
                             {% csrf_token %}
