@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{sessionUser.username}}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'LOGIN_APP/css/style.css' %}"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container">
+        <table class="table"><!--GENERAL INFO-->
+            <thead>
+                <td>
+                    <h5>Name:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisJunk.name}}</span>           
+                    <h5>Description:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisJunk.description}}</span>           
+                    <h5>Tribe:</h5> 
+                    {% for tribe in thisJunk.tribe.all %}
+                    <span style="color: green; font-weight: 600">{{tribe.name}}</span><br>      
+                    {% endfor %}     
+                    <h5>Location:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisJunk.poster.location}}</span>           
+                    <h5>Price Per Day:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisJunk.price}}</span>           
+                    <h5>Average Rating:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisJunk.avgRating}}</span>           
+                    <h5>Poster:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisJunk.poster.username}}</span>           
+                    <h5>Holder:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisJunk.holder.username}}</span>   
+
+                    <td>
+                        <h5>Booking Queue:</h5> 
+                        {% for thisBooking in thisJunksBookings %}                    
+                        {% if thisJunk == thisBooking.junk %}
+                            <span style="color: green; font-weight: 600">
+                                    <br>{{thisBooking.id}}--{{thisBooking.user.username}}--{{thisBooking.junk.name}}<br>
+                            </span> 
+                        {% endif %}
+                        {% endfor %}   
+                    </td>  
+                    <td>
+                            <h6>Actions:</h6>
+                            {% if thisJunk not in sessionUsersBooking %}
+                            <a href="/attic/book/{{thisJunk.id}}" style="color: blue">Book Junk</a><br> <!--BOOK BUTTON--> 
+                            {% endif %}
+                            {% if thisJunk in sessionUsersBooking %}
+                            <a href="/attic/unbook/{{thisJunk.id}}" style="color: red">UnBook Junk</a><br> <!--UNBOOK BUTTON-->   
+                            {% endif %}
+                        </td>
+                </td>          
+            </thead>
+        </table><!--GENERAL INFO-->
+
+        
+        <table class="table"><!--ALL REVIEWS FOR THIS JUNK-->
+            <h5>Reviews on {{thisJunk.name}}:</h5>  
+            {% for review in thisJunk.reviewed.all %}
+                <tr>
+                    <td>
+                        <span style="color: green; font-weight: 600">{{review.creator.fname}} {{review.creator.lname}}</span>  <br>
+                        <span style="color: green; font-weight: 600">{{review.content}}</span>  <br>
+                        <span style="color: green; font-weight: 600">{{review.rating}} out of 5</span> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table><!--ALL REVIEWS FOR THIS JUNK-->
+        {% if thisJunk.poster.id != request.session.user_live %}
+        <table class="table">
+            <form action="/attic/review_junk/{{thisJunk.id}}" method="POST" ><!--REVIEW FORM FOR THIS JUNK-->
+                {% csrf_token %}
+                <tr><textarea name="review"></textarea></tr>                
+                <tr>
+                    <td>
+                        <select name="rate">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Leave a review for this item!">
+                    </td>
+                </tr>                
+            </form><!--REVIEW FORM FOR THIS JUNK-->
+        </table>
+        {% endif %}
+        {% if thisJunk.poster.id == request.session.user_live %}
+        <table class="table"><!--UPDATE JUNK TABLE-->
+            <tr>
+                <td>
+                    <form action="/attic/editjunk/{{thisJunk.id}}" class="table" method="POST"><!--JUNK FORM-->
+                            {% csrf_token %}
+                        <h4>Update {{thisJunk.name}}</h4>
+                        <b>Name:</b> <input type="text" name="name" placeholder="Update your Junk"><br>
+                        <b>Location:</b> <input type="text" name="location" placeholder="Update where your junk is at."><br>
+                        <b>Price Per Day:</b> <input type="number" name="price" placeholder="Update charge."><br>
+                        <b>Description:</b> <br> <textarea name="description" id="" cols="30" rows="10" placeholder="Redescribe your junk."></textarea>
+                        <input type="submit" value="Update your Junk!">
+                    </form><!--JUNK FORM END-->
+                </td>
+            </tr>
+        </table><!--UPDATE JUNK TABLE END-->
+        <table class="table"><!--ADD IMAGE-->
+            <tr>
+                <td>
+                    <form action="/attic/editjunk/{{thisJunk.id}}" class="table" method="POST"><!--JUNK FORM-->
+                            {% csrf_token %}
+                        
+                        <input type="submit" value="Upload an image of your junk.">
+                    </form><!--JUNK FORM END-->
+                </td>
+            </tr>
+        </table><!--ADD IMAGE END-->
+        <a href="/attic/deletejunk/{{thisJunk.id}}" style="color: red">Delete</a><br><!--DELETE-->
+        {% endif %}
+        <br>
+        <iframe width="600" height="450" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?key=YOURKEYHERE={{thisJunk.location}}" allowfullscreen></iframe>
+        <br>
+        <a href="/attic">GO TO ATTIC</a>     <br>      
+        <a href="/logout">Logout</a>     
+    </div><!--CONTAINER-->
+</body>
+</html>

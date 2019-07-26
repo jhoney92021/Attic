@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{thisUser.username}}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'LOGIN_APP/css/style.css' %}"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+
+    <div class="container">
+        <table class="table"><!--COMPANY INFO-->
+            <thead>
+                <td>
+                    <h5>Name:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisCompany.name}}</span>
+                    
+                    <h5>Description:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisCompany.description}}</span>                
+                </td>          
+            </thead>
+        </table><!--COMPANY INFO-->
+
+        <table class="table"><!--JUNK POSTED-->
+            <h5>Junk Posted:</h5>        
+            {% for junk in thisCompany.posted.all %}
+                <tr>
+                    <td>
+                        <span style="color: green; font-weight: 600">{{junk.name}}</span> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table><!--JUNK POSTED-->
+        <table class="table"><!--JUNK HOLDING-->
+            <h5>Junk Holding:</h5>  
+            {% for junk in thisCompany.holding.all %}
+                <tr>
+                    <td>
+                        <span style="color: green; font-weight: 600">{{junk.name}}</span> 
+                        <span style="color: green; font-weight: 600">{{junk.name}}</span> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table><!--JUNK HOLDING-->
+        <table class="table"><!--USER ADMINSTRATING-->
+            <thead>
+                <th><h5>User Administrator:</h5></th>   
+                <th><h5>Actions</h5></th>
+            </thead>
+            <tr>
+                <td>
+                    <span style="color: green; font-weight: 600">{{thisCompany.administrator.username}}</span>
+                </td>
+                <td>
+                        <a href="/user{{thisCompany.administrator.id}}">View User Page</a> <br><!--VIEW USERS PAGE--> 
+                </td>
+            </tr>
+        </table><!--USER ADMINSTRATING-->
+
+        <table class="table"><!--EMPLOYEES-->
+            <thead>
+                <th><h5>Employees:</h5></th>   
+                <th><h5>Actions</h5></th>
+            </thead>
+            {% for user in thisCompany.employee.all %}
+            <tr>
+                <td>
+                    <span style="color: green; font-weight: 600">{{user.username}}</span>
+                </td>
+                <td>
+                        <a href="/user{{user.id}}">View User Page</a> <br><!--VIEW USERS PAGE--> 
+                </td>
+            </tr>
+            {% endfor %}
+        </table><!--EMPLOYEES-->
+        {% if liveUser == thisCompany.administrator %}
+            <form action="/addEmployee" class="table" method="POST">
+                {% csrf_token %}
+                <h3>Add Employee</h3>
+                <input type="hidden" name="thisCompany" value="{{thisCompany.id}}">
+                Employee Username: <input type="text" name="empname">
+                <input type="submit">
+            </form>
+        {% endif %}        
+
+        <br>
+        <a href="/attic">Go To Attic</a>     <br>      
+        <a href="/process/registrationform/company/{{liveUser.id}}">Register a Company</a><br>       
+        <a href="/logout">Logout</a>     
+    </div><!--CONTAINER-->
+</body>
+</html>

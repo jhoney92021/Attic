@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{thisUser.username}}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'LOGIN_APP/css/style.css' %}"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+
+    <div class="container">
+        <table class="table"><!--GENERAL INFO-->
+            <thead>
+                <td>
+                    <h5>First Name:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisUser.fname}}</span>
+                    
+                    <h5>Birthday:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisUser.birthday}}</span>                
+                    
+                    <h5>Location:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisUser.location}}</span> 
+
+                    <h5>Rating:</h5> 
+                    <span style="color: green; font-weight: 600">{{thisUser.avgRating}}</span>                
+                </td>          
+            </thead>
+        </table><!--GENERAL INFO-->
+        
+        <table class="table"><!--UPDATE LOCATION TABLE-->
+            <tr>
+                <td>
+                    <form action="/editaddress/{{thisUser.id}}" class="table" method="POST">
+                            {% csrf_token %}
+                        <h5>Update your location:</h5>
+                        <span style="color: black; font-weight: 600">Location:</span>
+                        <input type="text" name="location" placeholder="New Address">
+                        <input type="submit" value="Update your location!">
+                    </form><!--JUNK FORM END-->
+                </td>
+            </tr>
+        </table><!--UPDATE LOCATION TABLE END-->
+
+        <table class="table"><!--JUNK POSTED-->
+            <h5>Junk Posted:</h5>        
+            {% for junk in thisUser.posted.all %}
+                <tr>
+                    <td>
+                        <span style="color: green; font-weight: 600">{{junk.name}}</span> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table><!--JUNK POSTED-->
+        <table class="table"><!--JUNK HOLDING-->
+            <h5>Junk Holding:</h5>  
+            {% for junk in thisUser.holding.all %}
+                <tr>
+                    <td>
+                        <span style="color: green; font-weight: 600">{{junk.name}}</span> 
+                        <span style="color: green; font-weight: 600">{{junk.name}}</span> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table><!--JUNK HOLDING-->
+        <table class="table"><!--COMPANIES ADMINSTRATING-->
+            <thead>
+                <th><h5>Companies Administrating:</h5></th>   
+                <th><h5>Actions</h5></th>
+            </thead>
+            {% for company in thisUser.company_administrator.all %}
+            <tr>
+                <td>
+                    <span style="color: green; font-weight: 600">{{company.name}}</span>
+                </td>
+                <td>
+                        <a href="/company{{company.id}}">View Company Page</a> <br><!--VIEW COMPANY PAGE--> 
+                </td>
+            </tr>
+            {% endfor %}
+        </table><!--COMPANIES ADMINSTRATING-->
+
+        <table class="table"><!--thisUser's reviews-->
+            <h5>Reviews on {{thisUser.fname}}:</h5>  
+            {% for review in thisUser.reviewed.all %}
+                <tr>
+                    <td>
+                        <span style="color: green; font-weight: 600">{{review.creator.fname}} {{review.creator.lname}}</span>  <br>
+                        <span style="color: green; font-weight: 600">{{review.content}}</span>  <br>
+                        <span style="color: green; font-weight: 600">{{review.rating}} out of 5</span> 
+                    </td>
+                </tr>
+            {% endfor %}
+        </table><!--thisUser's reviews-->
+        {% if thisUser.id != request.session.user_live  %}
+        <form action="/attic/review/{{thisUser.id}}" method="POST">
+            {% csrf_token %}
+            <tr><textarea name="review"></textarea></tr>                
+            <tr>
+                <td>
+                    <select name="rate">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Leave {{thisUser.fname}} a review!">
+                </td>
+            </tr>  
+        </form>
+        {% endif %}
+
+        <br>
+        
+        <iframe width="600" height="450" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?key=YOURKEYHERE={{thisUser.location}}" allowfullscreen></iframe>
+        <br>
+        <a href="/attic">Go To Attic</a>     <br>      
+        <a href="/process/registrationform/company/{{thisUser.id}}">Register a Company</a><br>       
+        <a href="/logout">Logout</a>     
+    </div><!--CONTAINER-->
+</body>
+</html>
