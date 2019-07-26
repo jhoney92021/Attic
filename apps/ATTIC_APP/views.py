@@ -15,18 +15,22 @@ import random, datetime, bcrypt
 #ATTIC MAIN PAGE
 
 def index(request): #SECOND INDEX IE MAIN STORE PAGE
-    try:
-        sessionUser = request.session['user_live']
-        context = {
-            'sessionUser': Users.objects.get(id=sessionUser),
-            'allJunk': Junk.objects.all(),
-            'allTribes': Tribe.objects.all(),
-        }
-        return render(request,'ATTIC_APP/index.html', context)
+    # try:
+    sessionUser = request.session['user_live']
+    try: 
+        allJunk = Junk.objects.all().order_by(request.session['sortJunk'])
+    except:  
+        allJunk = Junk.objects.all()
+    context = {
+        'sessionUser': Users.objects.get(id=sessionUser),
+        'allJunk': allJunk,
+        'allTribes': Tribe.objects.all(),
+    }
+    return render(request,'ATTIC_APP/index.html', context)
 
-    except:
-        messages.error(request, 'Must be logged in first/Failed at AtticPage')
-        return redirect('/')
+    # except:
+    #     messages.error(request, 'Must be logged in first/Failed at AtticPage')
+    #     return redirect('/')
 
 #ATTIC MAIN PAGE
 #JUNK CRUD FUNCTIONS
@@ -72,6 +76,7 @@ def deleteJunk(request, junkID):
 #BEGIN REVIEW FUNCTIONS
 
 def reviewPoster(request, user_id):
+    rateTotal = 0
     liveUser = Users.objects.get(id = request.session['user_live'])
     new_review = Review.objects.create(
         content = request.POST['review'],
@@ -80,17 +85,32 @@ def reviewPoster(request, user_id):
     )
     subject = Users.objects.get(id = user_id)
     subject.reviewed.add(new_review)
+    for review in subject.reviewed.all():
+        rateTotal += review.rating
+    rateAverage = rateTotal/subject.reviewed.all().count()
+    subject.avgRating = rateAverage
+    subject.save()
     return redirect(f'/user/{user_id}')
 
 def reviewJunk(request, junkID):
+    rateTotal = 0
     liveUser = Users.objects.get(id = request.session['user_live'])
     new_review = Review.objects.create(
+
         content = request.POST['review'],
+
         rating = request.POST['rate'],
+
         creator = liveUser
+
     )
     subject = Junk.objects.get(id = junkID)
     subject.reviewed.add(new_review)
+    for review in subject.reviewed.all():
+        rateTotal += review.rating
+    rateAverage = rateTotal/subject.reviewed.all().count()
+    subject.avgRating = rateAverage
+    subject.save()
     return redirect(f'/attic/{junkID}')
 
 #END REVIEW FUNCTIONS
@@ -141,6 +161,10 @@ def returnJunk(request, junkID):#RETURN OBJECT TO POSTER
     poster = Users.objects.get(id = thisJunk.poster.id)
     thisJunk.holder = poster
     thisJunk.save()
+    return redirect('/attic')
+
+def sortBy(request):
+    request.session['sortJunk'] = request.POST['sortJunk']
     return redirect('/attic')
 
 #HOLD STUFF

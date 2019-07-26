@@ -18,6 +18,7 @@ class Junk(models.Model):#ALSO REFFERED TO AS JUNK
     poster = models.ForeignKey(Users, related_name='posted')#PERSON WHO OWNS JUNK
     holder = models.ForeignKey(Users, related_name='holding')#PERSON IN POSSESSION  OF THE JUNK, OWNER, OR RENTER ETC 
     reservation = models.ManyToManyField(Users, related_name='reserved')#LIST OF USERS WHO HAVE RESERVED AN ITEM OF JUNK
+    avgRating = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

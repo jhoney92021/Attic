@@ -79,7 +79,7 @@ option{
                         <li class="nav-item">
                           <a class="nav-link" href="#addjunk">Add review</a>
                         </li>
-                        <li class="nav-item dropdown">
+                        <!-- <li class="nav-item dropdown">
                           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                            Catagories
                           </a>
@@ -89,7 +89,10 @@ option{
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Something else here</a>
                           </div>
-                        </li>
+                        </li> -->
+
+
+
                         <!-- <li class="nav-item">
                           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                         </li> -->
@@ -123,10 +126,12 @@ option{
                 <h4></h4><br>
                 <hr class="w3-clear">
                 <h5 style="color: #808080; font-size: 30px;font-weight: 600">First name: <span style="color: green; font-size: 30px;font-weight: 600">{{thisUser.fname}}</span></h5> 
+                <h5 style="color: #808080; font-size: 30px;font-weight: 600">My Rating: <span style="color: green; font-size: 30px;font-weight: 600">{{thisUser.avgRating | floatformat:1}}</span></h5> 
                     
 
                   <div class="w3-row-padding" style="margin:0 -16px">
                   <br>
+                  
                 </div>
               </div>
               <br>
@@ -164,7 +169,7 @@ option{
                                     <tr>
                                         <td>
                                             <span style="color: green; font-weight: 600">{{junk.name}}</span> 
-                                            <span style="color: green; font-weight: 600">{{junk.name}}</span> 
+                                            
                                         </td>
                                     </tr>
                                 {% endfor %}

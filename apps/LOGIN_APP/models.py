@@ -90,6 +90,7 @@ class Users(models.Model):
     birthday = models.DateField(default= datetime.date.today)
     email = models.CharField(max_length=80, default='Seriously, no email? it is 2019 get with it man')
     password = models.CharField(max_length=8)
+    avgRating = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = Manager()
